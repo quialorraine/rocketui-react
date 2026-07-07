@@ -70,14 +70,17 @@ a machine-readable form:
   be fed into an LLM's context.
 - **`AGENTS.md`** — the same reference plus authoring guidelines.
 
-The fastest setup is two commands — install, then `init` to drop the reference
-into your project root (`AGENTS.md`), which editors like Cursor read
-automatically:
+The fastest setup is two commands — install, then `init`, which drops the
+reference into your project:
 
 ```bash
 npm install @rocketui-react/core
 npx @rocketui-react/core init
 ```
+
+`init` writes `AGENTS.md` (read automatically by Cursor and ~28 other agents)
+and a `CLAUDE.md` that imports it (`@AGENTS.md`) so **Claude Code** picks it up
+too. Existing files are merged, not overwritten, and re-running is safe.
 
 After that, just prompt your agent — for example: *"build a mini dashboard using
 RocketUI components"*. Because the agent sees the exact exports and prop types,

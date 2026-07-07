@@ -89,8 +89,24 @@ switch (cmd) {
       writeFileSync(target, existing.trimEnd() + "\n\n" + block);
       console.log("Appended the RocketUI component reference to AGENTS.md.");
     }
+    // Claude Code reads CLAUDE.md, not AGENTS.md, so wire up an import.
+    const claudeTarget = join(process.cwd(), "CLAUDE.md");
+    const importLine = "@AGENTS.md";
+    let claude = null;
+    try {
+      claude = readFileSync(claudeTarget, "utf8");
+    } catch {
+      /* no existing file */
+    }
+    if (claude == null) {
+      writeFileSync(claudeTarget, importLine + "\n");
+      console.log("Created CLAUDE.md importing AGENTS.md (for Claude Code).");
+    } else if (!new RegExp(`^\\s*@AGENTS\\.md\\s*$`, "m").test(claude)) {
+      writeFileSync(claudeTarget, importLine + "\n" + claude.replace(/^\n+/, ""));
+      console.log("Added @AGENTS.md import to CLAUDE.md (for Claude Code).");
+    }
     console.log(
-      "Your AI agent (e.g. Cursor) will now read the RocketUI API automatically.",
+      "Your AI agent (Cursor, Claude Code, …) will now read the RocketUI API automatically.",
     );
     break;
   }
