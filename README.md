@@ -70,10 +70,18 @@ a machine-readable form:
   be fed into an LLM's context.
 - **`AGENTS.md`** — the same reference plus authoring guidelines.
 
-Point your agent at one of these files, then prompt it to build a screen — for
-example: *"build a mini dashboard using RocketUI components"*. Because the agent
-sees the exact exports and prop types, it composes UIs against the real API
-instead of guessing.
+The fastest setup is two commands — install, then `init` to drop the reference
+into your project root (`AGENTS.md`), which editors like Cursor read
+automatically:
+
+```bash
+npm install @rocketui-react/core
+npx @rocketui-react/core init
+```
+
+After that, just prompt your agent — for example: *"build a mini dashboard using
+RocketUI components"*. Because the agent sees the exact exports and prop types,
+it composes UIs against the real API instead of guessing.
 
 Both files are generated from a single source of truth
 (`src/demo/docs-registry.ts`), which is also intended to back a future MCP
@@ -89,6 +97,7 @@ The package ships a small CLI, handy for inspecting the library or piping the
 manifest into an agent:
 
 ```bash
+npx @rocketui-react/core init     # add the reference to ./AGENTS.md
 npx @rocketui-react/core list     # list all components
 npx @rocketui-react/core llms     # print llms.txt (pipe into an agent)
 npx @rocketui-react/core agents   # print AGENTS.md

@@ -8,7 +8,7 @@
  *   npx @rocketui-react/core list
  *   npx @rocketui-react/core llms | pbcopy
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -46,6 +46,8 @@ Usage:
   npx ${pkg.name} <command>
 
 Commands:
+  init               Add the RocketUI reference to ./AGENTS.md so your
+                     AI agent uses the real API automatically
   list, components   List all available components
   llms               Print the AI manifest (llms.txt) — pipe into an agent
   agents             Print the agent guide (AGENTS.md)
@@ -58,7 +60,40 @@ Install:
 `);
 }
 
+const MARK_START = "<!-- rocketui:start -->";
+const MARK_END = "<!-- rocketui:end -->";
+
 switch (cmd) {
+  case "init": {
+    const src = read("AGENTS.md");
+    if (!src) {
+      console.error("AGENTS.md not found inside the package.");
+      process.exit(1);
+    }
+    const block = `${MARK_START}\n${src.trim()}\n${MARK_END}\n`;
+    const target = join(process.cwd(), "AGENTS.md");
+    let existing = null;
+    try {
+      existing = readFileSync(target, "utf8");
+    } catch {
+      /* no existing file */
+    }
+    if (existing == null) {
+      writeFileSync(target, block);
+      console.log("Created AGENTS.md with the RocketUI component reference.");
+    } else if (existing.includes(MARK_START) && existing.includes(MARK_END)) {
+      const re = new RegExp(`${MARK_START}[\\s\\S]*?${MARK_END}\\n?`);
+      writeFileSync(target, existing.replace(re, block));
+      console.log("Updated the RocketUI section in AGENTS.md.");
+    } else {
+      writeFileSync(target, existing.trimEnd() + "\n\n" + block);
+      console.log("Appended the RocketUI component reference to AGENTS.md.");
+    }
+    console.log(
+      "Your AI agent (e.g. Cursor) will now read the RocketUI API automatically.",
+    );
+    break;
+  }
   case "list":
   case "components": {
     const names = listComponents();
