@@ -23,6 +23,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "rocketui": "bin/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -32,6 +35,7 @@
   },
   "files": [
     "dist",
+    "bin",
     "AGENTS.md",
     "llms.txt",
     "README.md"
@@ -54,6 +58,7 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
+    "@rocketui-react/core": "^0.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.6.0"

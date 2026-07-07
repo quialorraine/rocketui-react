@@ -1,5 +1,8 @@
 # RocketUI
 
+[![npm version](https://img.shields.io/npm/v/@rocketui-react/core.svg)](https://www.npmjs.com/package/@rocketui-react/core)
+[![license](https://img.shields.io/npm/l/@rocketui-react/core.svg)](./LICENSE)
+
 A production-ready React + TypeScript component library and design system,
 styled with Tailwind CSS v4 and driven entirely by semantic design tokens.
 
@@ -78,6 +81,17 @@ server. Regenerate them with:
 
 ```bash
 npm run generate:manifest
+```
+
+### CLI
+
+The package ships a small CLI, handy for inspecting the library or piping the
+manifest into an agent:
+
+```bash
+npx @rocketui-react/core list     # list all components
+npx @rocketui-react/core llms     # print llms.txt (pipe into an agent)
+npx @rocketui-react/core agents   # print AGENTS.md
 ```
 
 ## Development
