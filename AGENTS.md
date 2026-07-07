@@ -3,9 +3,9 @@
 RocketUI is a production-ready React + TypeScript component library and
 design system, styled with Tailwind CSS v4 and semantic design tokens.
 
-- Package: `@rocketui/react`
-- Install: `npm install @rocketui/react`
-- Import the stylesheet once at your app root: `import "@rocketui/react/styles.css";`
+- Package: `@rocketui-react/core`
+- Install: `npm install @rocketui-react/core`
+- Import the stylesheet once at your app root: `import "@rocketui-react/core/styles.css";`
 - Theming is token-driven: toggle a `.dark` class on `<html>` for dark mode.
 
 Every component accepts `className` (merged via `cn`) and forwards native HTML
@@ -14,9 +14,9 @@ attributes. Interactive components share the same prop language where relevant:
 
 ## Guidelines for generating UI with RocketUI
 
-1. Only use components exported from `@rocketui/react`. Do not invent components or props
+1. Only use components exported from `@rocketui-react/core`. Do not invent components or props
    that are not listed in the reference below.
-2. Import components from `@rocketui/react` and import `@rocketui/react/styles.css` once at the
+2. Import components from `@rocketui-react/core` and import `@rocketui-react/core/styles.css` once at the
    app root.
 3. Never hardcode colours. Use semantic Tailwind token classes (`bg-background`,
    `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border`,
@@ -38,7 +38,7 @@ Accordion, Alert, Announcement, Area Chart, Attachment, Autocomplete, Avatar, Ba
 Exports: `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`
 
 ```tsx
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@rocketui/react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@rocketui-react/core";
 ```
 
 #### Accordion
@@ -64,7 +64,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@r
 Usage:
 
 ```tsx
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@rocketui/react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -85,7 +85,7 @@ export function Example() {
 Exports: `Alert`, `AlertDescription`, `AlertLink`
 
 ```tsx
-import { Alert, AlertDescription, AlertLink } from "@rocketui/react";
+import { Alert, AlertDescription, AlertLink } from "@rocketui-react/core";
 ```
 
 #### Alert
@@ -104,7 +104,7 @@ import { Alert, AlertDescription, AlertLink } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Alert, AlertDescription } from "@rocketui/react";
+import { Alert, AlertDescription } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -122,7 +122,7 @@ export function Example() {
 Exports: `Announcement`
 
 ```tsx
-import { Announcement } from "@rocketui/react";
+import { Announcement } from "@rocketui-react/core";
 ```
 
 #### Announcement
@@ -140,7 +140,7 @@ Renders an anchor when href is set, otherwise a button. Forwards native attribut
 Usage:
 
 ```tsx
-import { Announcement } from "@rocketui/react";
+import { Announcement } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -158,7 +158,7 @@ export function Example() {
 Exports: `AreaChart`
 
 ```tsx
-import { AreaChart } from "@rocketui/react";
+import { AreaChart } from "@rocketui-react/core";
 ```
 
 #### AreaChart
@@ -176,7 +176,7 @@ import { AreaChart } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { AreaChart } from "@rocketui/react";
+import { AreaChart } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -196,7 +196,7 @@ export function Example() {
 Exports: `Attachment`, `AttachmentTile`
 
 ```tsx
-import { Attachment, AttachmentTile } from "@rocketui/react";
+import { Attachment, AttachmentTile } from "@rocketui-react/core";
 ```
 
 #### AttachmentTile
@@ -230,7 +230,7 @@ Compact list row with a thumbnail and text.
 Usage:
 
 ```tsx
-import { Attachment, AttachmentTile } from "@rocketui/react";
+import { Attachment, AttachmentTile } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -250,7 +250,7 @@ export function Example() {
 Exports: `Autocomplete`
 
 ```tsx
-import { Autocomplete } from "@rocketui/react";
+import { Autocomplete } from "@rocketui-react/core";
 ```
 
 #### Autocomplete
@@ -273,7 +273,7 @@ import { Autocomplete } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Autocomplete } from "@rocketui/react";
+import { Autocomplete } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -295,7 +295,7 @@ export function Example() {
 Exports: `Avatar`, `AvatarGroup`
 
 ```tsx
-import { Avatar, AvatarGroup } from "@rocketui/react";
+import { Avatar, AvatarGroup } from "@rocketui-react/core";
 ```
 
 #### Avatar
@@ -322,7 +322,7 @@ import { Avatar, AvatarGroup } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Avatar } from "@rocketui/react";
+import { Avatar } from "@rocketui-react/core";
 
 export function Example() {
   return <Avatar name="Alex Morgan" src="/alex.jpg" />;
@@ -336,7 +336,7 @@ export function Example() {
 Exports: `Badge`, `BadgeWrapper`
 
 ```tsx
-import { Badge, BadgeWrapper } from "@rocketui/react";
+import { Badge, BadgeWrapper } from "@rocketui-react/core";
 ```
 
 #### Badge
@@ -362,7 +362,7 @@ Anchors a Badge to the corner of its child (icon, avatar…).
 Usage:
 
 ```tsx
-import { Badge } from "@rocketui/react";
+import { Badge } from "@rocketui-react/core";
 
 export function Example() {
   return <Badge color="primary">New</Badge>;
@@ -376,7 +376,7 @@ export function Example() {
 Exports: `BarChart`
 
 ```tsx
-import { BarChart } from "@rocketui/react";
+import { BarChart } from "@rocketui-react/core";
 ```
 
 #### BarChart
@@ -395,7 +395,7 @@ import { BarChart } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { BarChart } from "@rocketui/react";
+import { BarChart } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -415,7 +415,7 @@ export function Example() {
 Exports: `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator`, `BreadcrumbEllipsis`
 
 ```tsx
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@rocketui/react";
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@rocketui-react/core";
 ```
 
 #### Breadcrumb
@@ -436,7 +436,7 @@ Structural parts. Link and Page mark interactive vs. current crumbs.
 Usage:
 
 ```tsx
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage } from "@rocketui/react";
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -457,7 +457,7 @@ export function Example() {
 Exports: `Button`
 
 ```tsx
-import { Button } from "@rocketui/react";
+import { Button } from "@rocketui-react/core";
 ```
 
 #### Button
@@ -479,7 +479,7 @@ import { Button } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Button } from "@rocketui/react";
+import { Button } from "@rocketui-react/core";
 
 export function Example() {
   return <Button>Get started</Button>;
@@ -493,7 +493,7 @@ export function Example() {
 Exports: `ButtonGroup`, `Button`
 
 ```tsx
-import { ButtonGroup, Button } from "@rocketui/react";
+import { ButtonGroup, Button } from "@rocketui-react/core";
 ```
 
 #### ButtonGroup
@@ -511,7 +511,7 @@ Configure the whole group once; each child button can override its own props.
 Usage:
 
 ```tsx
-import { ButtonGroup, Button } from "@rocketui/react";
+import { ButtonGroup, Button } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -530,7 +530,7 @@ export function Example() {
 Exports: `Calendar`
 
 ```tsx
-import { Calendar } from "@rocketui/react";
+import { Calendar } from "@rocketui-react/core";
 ```
 
 #### Calendar
@@ -555,7 +555,7 @@ import { Calendar } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Calendar } from "@rocketui/react";
+import { Calendar } from "@rocketui-react/core";
 import { useState } from "react";
 
 export function Example() {
@@ -571,7 +571,7 @@ export function Example() {
 Exports: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardMedia`
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardMedia } from "@rocketui/react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardMedia } from "@rocketui-react/core";
 ```
 
 #### Card
@@ -595,7 +595,7 @@ Structural slots. Each accepts native attributes and className.
 Usage:
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@rocketui/react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -617,7 +617,7 @@ export function Example() {
 Exports: `Checkbox`
 
 ```tsx
-import { Checkbox } from "@rocketui/react";
+import { Checkbox } from "@rocketui-react/core";
 ```
 
 #### Checkbox
@@ -637,7 +637,7 @@ import { Checkbox } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Checkbox } from "@rocketui/react";
+import { Checkbox } from "@rocketui-react/core";
 
 export function Example() {
   return <Checkbox label="Accept terms" />;
@@ -651,7 +651,7 @@ export function Example() {
 Exports: `Chip`
 
 ```tsx
-import { Chip } from "@rocketui/react";
+import { Chip } from "@rocketui-react/core";
 ```
 
 #### Chip
@@ -671,7 +671,7 @@ import { Chip } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Chip } from "@rocketui/react";
+import { Chip } from "@rocketui-react/core";
 
 export function Example() {
   return <Chip color="primary">Label</Chip>;
@@ -685,7 +685,7 @@ export function Example() {
 Exports: `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose`
 
 ```tsx
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@rocketui/react";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@rocketui-react/core";
 ```
 
 #### Dialog
@@ -717,7 +717,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 Usage:
 
 ```tsx
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Button } from "@rocketui/react";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Button } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -742,7 +742,7 @@ export function Example() {
 Exports: `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`
 
 ```tsx
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@rocketui/react";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@rocketui-react/core";
 ```
 
 #### DropdownMenu
@@ -777,7 +777,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 Usage:
 
 ```tsx
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Button } from "@rocketui/react";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Button } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -801,7 +801,7 @@ export function Example() {
 Exports: `Input`, `Textarea`
 
 ```tsx
-import { Input, Textarea } from "@rocketui/react";
+import { Input, Textarea } from "@rocketui-react/core";
 ```
 
 #### Input
@@ -831,7 +831,7 @@ Shares the Input field props (label, error, size…) on a multi-line control and
 Usage:
 
 ```tsx
-import { Input } from "@rocketui/react";
+import { Input } from "@rocketui-react/core";
 
 export function Example() {
   return <Input label="Email" placeholder="you@example.com" />;
@@ -845,7 +845,7 @@ export function Example() {
 Exports: `InputOTP`
 
 ```tsx
-import { InputOTP } from "@rocketui/react";
+import { InputOTP } from "@rocketui-react/core";
 ```
 
 #### InputOTP
@@ -867,7 +867,7 @@ import { InputOTP } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { InputOTP } from "@rocketui/react";
+import { InputOTP } from "@rocketui-react/core";
 
 export function Example() {
   return <InputOTP length={6} onComplete={(code) => console.log(code)} />;
@@ -881,7 +881,7 @@ export function Example() {
 Exports: `Kbd`
 
 ```tsx
-import { Kbd } from "@rocketui/react";
+import { Kbd } from "@rocketui-react/core";
 ```
 
 #### Kbd
@@ -896,7 +896,7 @@ import { Kbd } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Kbd } from "@rocketui/react";
+import { Kbd } from "@rocketui-react/core";
 
 export function Example() {
   return <Kbd keys={["command"]}>K</Kbd>;
@@ -910,7 +910,7 @@ export function Example() {
 Exports: `Meter`
 
 ```tsx
-import { Meter } from "@rocketui/react";
+import { Meter } from "@rocketui-react/core";
 ```
 
 #### Meter
@@ -930,7 +930,7 @@ import { Meter } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Meter } from "@rocketui/react";
+import { Meter } from "@rocketui-react/core";
 
 export function Example() {
   return <Meter label="Storage" value={60} />;
@@ -944,7 +944,7 @@ export function Example() {
 Exports: `NumberField`
 
 ```tsx
-import { NumberField } from "@rocketui/react";
+import { NumberField } from "@rocketui-react/core";
 ```
 
 #### NumberField
@@ -970,7 +970,7 @@ import { NumberField } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { NumberField } from "@rocketui/react";
+import { NumberField } from "@rocketui-react/core";
 import { useState } from "react";
 
 export function Example() {
@@ -986,7 +986,7 @@ export function Example() {
 Exports: `Pagination`
 
 ```tsx
-import { Pagination } from "@rocketui/react";
+import { Pagination } from "@rocketui-react/core";
 ```
 
 #### Pagination
@@ -1008,7 +1008,7 @@ import { Pagination } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Pagination } from "@rocketui/react";
+import { Pagination } from "@rocketui-react/core";
 import { useState } from "react";
 
 export function Example() {
@@ -1024,7 +1024,7 @@ export function Example() {
 Exports: `Popover`, `PopoverTrigger`, `PopoverContent`
 
 ```tsx
-import { Popover, PopoverTrigger, PopoverContent } from "@rocketui/react";
+import { Popover, PopoverTrigger, PopoverContent } from "@rocketui-react/core";
 ```
 
 #### Popover
@@ -1054,7 +1054,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Popover, PopoverTrigger, PopoverContent, Button } from "@rocketui/react";
+import { Popover, PopoverTrigger, PopoverContent, Button } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -1075,7 +1075,7 @@ export function Example() {
 Exports: `RadioGroup`, `Radio`, `RadioCard`
 
 ```tsx
-import { RadioGroup, Radio, RadioCard } from "@rocketui/react";
+import { RadioGroup, Radio, RadioCard } from "@rocketui-react/core";
 ```
 
 #### RadioGroup
@@ -1104,7 +1104,7 @@ import { RadioGroup, Radio, RadioCard } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { RadioGroup, Radio } from "@rocketui/react";
+import { RadioGroup, Radio } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -1123,7 +1123,7 @@ export function Example() {
 Exports: `ScrollShadow`
 
 ```tsx
-import { ScrollShadow } from "@rocketui/react";
+import { ScrollShadow } from "@rocketui-react/core";
 ```
 
 #### ScrollShadow
@@ -1140,7 +1140,7 @@ import { ScrollShadow } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { ScrollShadow } from "@rocketui/react";
+import { ScrollShadow } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -1158,7 +1158,7 @@ export function Example() {
 Exports: `SearchField`
 
 ```tsx
-import { SearchField } from "@rocketui/react";
+import { SearchField } from "@rocketui-react/core";
 ```
 
 #### SearchField
@@ -1176,7 +1176,7 @@ Also inherits the Input props (size, label, description, error…).
 Usage:
 
 ```tsx
-import { SearchField } from "@rocketui/react";
+import { SearchField } from "@rocketui-react/core";
 import { useState } from "react";
 
 export function Example() {
@@ -1192,7 +1192,7 @@ export function Example() {
 Exports: `Select`
 
 ```tsx
-import { Select } from "@rocketui/react";
+import { Select } from "@rocketui-react/core";
 ```
 
 #### Select
@@ -1223,7 +1223,7 @@ import { Select } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Select } from "@rocketui/react";
+import { Select } from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -1246,7 +1246,7 @@ export function Example() {
 Exports: `Skeleton`
 
 ```tsx
-import { Skeleton } from "@rocketui/react";
+import { Skeleton } from "@rocketui-react/core";
 ```
 
 #### Skeleton
@@ -1262,7 +1262,7 @@ import { Skeleton } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Skeleton } from "@rocketui/react";
+import { Skeleton } from "@rocketui-react/core";
 
 export function Example() {
   return <Skeleton variant="text" width={200} />;
@@ -1276,7 +1276,7 @@ export function Example() {
 Exports: `Slider`
 
 ```tsx
-import { Slider } from "@rocketui/react";
+import { Slider } from "@rocketui-react/core";
 ```
 
 #### Slider
@@ -1300,7 +1300,7 @@ import { Slider } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Slider } from "@rocketui/react";
+import { Slider } from "@rocketui-react/core";
 import { useState } from "react";
 
 export function Example() {
@@ -1316,7 +1316,7 @@ export function Example() {
 Exports: `Surface`
 
 ```tsx
-import { Surface } from "@rocketui/react";
+import { Surface } from "@rocketui-react/core";
 ```
 
 #### Surface
@@ -1333,7 +1333,7 @@ import { Surface } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Surface } from "@rocketui/react";
+import { Surface } from "@rocketui-react/core";
 
 export function Example() {
   return <Surface variant="elevated">Content</Surface>;
@@ -1347,7 +1347,7 @@ export function Example() {
 Exports: `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`
 
 ```tsx
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@rocketui/react";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@rocketui-react/core";
 ```
 
 #### Table
@@ -1385,7 +1385,7 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "@rocketui/react";
+} from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -1414,7 +1414,7 @@ export function Example() {
 Exports: `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`
 
 ```tsx
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@rocketui/react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@rocketui-react/core";
 ```
 
 #### Tabs
@@ -1459,7 +1459,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@rocketui/react";
+} from "@rocketui-react/core";
 
 export function Example() {
   return (
@@ -1482,7 +1482,7 @@ export function Example() {
 Exports: `Toggle`
 
 ```tsx
-import { Toggle } from "@rocketui/react";
+import { Toggle } from "@rocketui-react/core";
 ```
 
 #### Toggle
@@ -1502,7 +1502,7 @@ import { Toggle } from "@rocketui/react";
 Usage:
 
 ```tsx
-import { Toggle } from "@rocketui/react";
+import { Toggle } from "@rocketui-react/core";
 
 export function Example() {
   return <Toggle label="Do you ship internationally?" defaultChecked />;

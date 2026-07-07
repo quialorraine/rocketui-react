@@ -11,19 +11,19 @@ styled with Tailwind CSS v4 and driven entirely by semantic design tokens.
 ## Installation
 
 ```bash
-npm install @rocketui/react
+npm install @rocketui-react/core
 ```
 
 Import the stylesheet once at the root of your app:
 
 ```tsx
-import "@rocketui/react/styles.css";
+import "@rocketui-react/core/styles.css";
 ```
 
 ## Usage
 
 ```tsx
-import { Card, Button, Badge } from "@rocketui/react";
+import { Card, Button, Badge } from "@rocketui-react/core";
 
 export function Example() {
   return (

@@ -1,14 +1,14 @@
 {
-  "name": "@rocketui/react",
+  "name": "@rocketui-react/core",
   "version": "0.1.0",
   "type": "module",
   "description": "RocketUI — a production-ready React component library and design system.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/quialorraine/rocket-ui.git"
+    "url": "https://github.com/quialorraine/rocketui-react.git"
   },
-  "homepage": "https://github.com/quialorraine/rocket-ui#readme",
+  "homepage": "https://github.com/quialorraine/rocketui-react#readme",
   "keywords": [
     "react",
     "components",

@@ -4,8 +4,8 @@ import type { ApiGroup } from "./components/doc-sections";
 /*                                Global config                                */
 /* -------------------------------------------------------------------------- */
 
-export const PKG = "@rocketui/react";
-export const REPO_URL = "https://github.com/quialorraine/rocket-ui";
+export const PKG = "@rocketui-react/core";
+export const REPO_URL = "https://github.com/quialorraine/rocketui-react";
 export const FIGMA_FILE_URL =
   "https://www.figma.com/design/fSHaOsr5mETQ0JnXqiw0AZ/Untitled--Copy-";
 export const PEER_DEPENDENCIES =
