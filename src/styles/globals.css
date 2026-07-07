@@ -32,7 +32,27 @@
 @source inline("max-w-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl,full,none}");
 @source inline("text-{xs,sm,base,lg,xl,2xl,3xl,4xl,5xl,6xl}");
 @source inline("font-{normal,medium,semibold,bold} text-{left,center,right} leading-{none,tight,snug,normal,relaxed} tracking-{tight,normal,wide} truncate uppercase lowercase capitalize");
-@source inline("relative absolute fixed sticky static inset-0 inset-x-0 inset-y-0 top-0 right-0 bottom-0 left-0 z-0 z-10 z-20 z-30 z-40 z-50");
+@source inline("relative absolute fixed sticky static inset-0 inset-x-0 inset-y-0 z-0 z-10 z-20 z-30 z-40 z-50");
+@source inline("top-{0,1/2,full} right-{0,1/2,full} bottom-{0,1/2,full} left-{0,1/2,full}");
+/*
+ * Transforms and fractional insets. The library's own components (notably
+ * BadgeWrapper corner anchoring) rely on these, and a precompiled build does
+ * not reliably pick fraction or arbitrary-value utilities up from component
+ * source, so force-include them. This keeps positioned overlays working for
+ * consumers who have no Tailwind of their own.
+ */
+@source inline("{,-}translate-x-{0,1,2,3,4,5,6,px,1/2,full} {,-}translate-y-{0,1,2,3,4,5,6,px,1/2,full}");
+@source inline("top-[14%] right-[14%] bottom-[14%] left-[14%]");
+/*
+ * Rotate, scale, skew and transform-origin. Same rationale as the block above:
+ * a precompiled build does not reliably pick these up from component source,
+ * so force-include them. Covers the button press-scale, popover and dropdown
+ * enter and exit animations, and caret rotation.
+ */
+@source inline("rotate-{0,1,2,3,6,12,45,90,135,180} -rotate-{1,2,3,6,12,45,90,180}");
+@source inline("scale-{0,50,75,90,95,100,105,110,125} scale-x-{95,100,105} scale-y-{95,100,105} scale-[0.98]");
+@source inline("skew-x-{0,1,2,3,6,12} skew-y-{0,1,2,3,6,12}");
+@source inline("origin-{center,top,top-right,right,bottom-right,bottom,bottom-left,left,top-left}");
 @source inline("overflow-{hidden,auto,visible,scroll} overflow-x-{auto,hidden} overflow-y-{auto,hidden}");
 @source inline("rounded rounded-{sm,md,lg,xl,2xl,3xl,full,none} border border-0 border-2 border-t border-b border-l border-r");
 @source inline("shadow-{sm,md,lg,xl,none} shadow");
