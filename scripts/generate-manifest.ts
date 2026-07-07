@@ -94,6 +94,33 @@ const RULES = `## Guidelines for generating UI with RocketUI
    components as containers.
 5. Respect each component's documented prop types and defaults exactly.
 
+## Styling & layout (important)
+
+\`${PKG}/styles.css\` is precompiled and ships a curated safelist of layout
+utilities, so you can build screens **without setting up Tailwind**. Available
+out of the box (including \`sm:\`/\`md:\`/\`lg:\` variants for the layout ones):
+
+- Display & flex: \`flex\`, \`grid\`, \`hidden\`, \`flex-row\`, \`flex-col\`,
+  \`flex-wrap\`, \`items-*\`, \`justify-*\`, \`self-*\`, \`place-*\`
+- Grid: \`grid-cols-1\`…\`grid-cols-12\`, \`col-span-*\`, \`grid-rows-*\`, \`row-span-*\`
+- Spacing: \`gap-*\`, \`p*-*\`, \`m*-*\`, \`space-x-*\`, \`space-y-*\`
+- Sizing: \`w-full\`, \`w-1/2\`, \`h-full\`, \`h-screen\`, \`min-h-screen\`, \`size-*\`,
+  \`max-w-xs\`…\`max-w-7xl\`
+- Typography: \`text-xs\`…\`text-6xl\`, \`font-medium/semibold/bold\`,
+  \`text-left/center/right\`, \`leading-*\`, \`tracking-*\`, \`truncate\`
+- Position/effects: \`relative\`, \`absolute\`, \`sticky\`, \`inset-0\`, \`z-*\`,
+  \`overflow-*\`, \`rounded-*\`, \`border*\`, \`shadow-*\`
+- Token colours: \`bg-*\`, \`text-*\`, \`border-*\` for every semantic token.
+
+Rules:
+- Stick to these standard utilities. **Arbitrary values** like
+  \`grid-cols-[220px_1fr]\`, \`w-[240px]\`, \`text-[13px]\`, \`p-[18px]\` are NOT in the
+  precompiled CSS and will silently do nothing unless the project has its own
+  Tailwind setup.
+- If you need arbitrary values or utilities beyond this list, install Tailwind
+  CSS v4 in the project so it can generate them; the token colours resolve
+  automatically because they are exposed as CSS variables.
+
 ## Available components
 
 ${componentList}.`;
