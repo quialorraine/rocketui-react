@@ -212,7 +212,7 @@ export function Slider({
             <span className="text-sm font-medium text-foreground tabular-nums">
               {values.map((v, i) => (
                 <span key={i}>
-                  {i > 0 && <span className="mx-1 text-muted-foreground">–</span>}
+                  {i > 0 && <span className="mx-1 text-muted-foreground">to</span>}
                   {formatValue(v)}
                 </span>
               ))}

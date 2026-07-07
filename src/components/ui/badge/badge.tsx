@@ -161,7 +161,7 @@ export interface BadgeWrapperProps extends ComponentPropsWithoutRef<"span"> {
   badge: ReactNode;
   /** Where the badge is anchored relative to the children. */
   placement?: BadgePlacement;
-  /** Shape of the wrapped element — circular insets the badge onto the edge. */
+  /** Shape of the wrapped element, circular insets the badge onto the edge. */
   overlap?: BadgeOverlap;
   /** Hide the overlay while keeping layout stable (e.g. zero notifications). */
   hidden?: boolean;

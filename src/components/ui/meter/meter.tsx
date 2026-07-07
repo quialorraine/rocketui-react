@@ -48,7 +48,7 @@ export interface MeterProps
   label?: ReactNode;
   /** Render the value on the right of the header (default `NN%`). */
   showValue?: boolean;
-  /** Custom value formatter, receives the raw value and the 0–100 percentage. */
+  /** Custom value formatter, receives the raw value and the 0 to 100 percentage. */
   formatValue?: (value: number, percent: number) => ReactNode;
   /** Fill color. */
   color?: MeterColor;

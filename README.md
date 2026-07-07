@@ -58,19 +58,20 @@ Theming is CSS-variable based. Override the tokens on `:root` and toggle a
 ```
 
 Always style with the semantic token utilities (`bg-card`, `text-foreground`,
-`text-muted-foreground`, `border-border`, `bg-primary`, …) rather than hardcoded
-colours, so themes keep working.
+`text-muted-foreground`, `border-border`, `bg-primary`, and so on) rather than
+hardcoded colours, so themes keep working.
 
 ## Using with AI agents
 
 The package ships two generated files that describe the entire component API in
 a machine-readable form:
 
-- **`llms.txt`** — the full component reference (exports, props, usage) meant to
-  be fed into an LLM's context.
-- **`AGENTS.md`** — the same reference plus authoring guidelines.
+- **`llms.txt`**: the full component reference (exports, props, usage) meant to
+  be fed into a model's context.
+- **`AGENTS.md`**: the same reference plus authoring guidelines and a
+  "Choosing a component" table that routes a plain need to the right component.
 
-The fastest setup is two commands — install, then `init`, which drops the
+The fastest setup is two commands. Install, then run `init`, which drops the
 reference into your project:
 
 ```bash
@@ -78,13 +79,14 @@ npm install @rocketui-react/core
 npx @rocketui-react/core init
 ```
 
-`init` writes `AGENTS.md` (read automatically by Cursor and ~28 other agents)
-and a `CLAUDE.md` that imports it (`@AGENTS.md`) so **Claude Code** picks it up
-too. Existing files are merged, not overwritten, and re-running is safe.
+`init` writes (or merges into) an `AGENTS.md` file at the root of your project.
+`AGENTS.md` is the open convention that coding agents read automatically.
+Existing files are merged, not overwritten, and re-running is safe.
 
-After that, just prompt your agent — for example: *"build a mini dashboard using
-RocketUI components"*. Because the agent sees the exact exports and prop types,
-it composes UIs against the real API instead of guessing.
+After that, just prompt your agent, for example: *"build a mini dashboard using
+RocketUI components"*. Because the agent sees the exact exports, prop types, and
+which component fits each need, it composes UIs against the real API instead of
+guessing.
 
 Both files are generated from a single source of truth
 (`src/demo/docs-registry.ts`), which is also intended to back a future MCP

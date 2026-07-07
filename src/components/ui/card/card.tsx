@@ -170,7 +170,7 @@ CardFooter.displayName = "CardFooter";
 /*                                    Media                                    */
 /* -------------------------------------------------------------------------- */
 
-/** Rounded media slot — wrap an <img>, video, gradient, or icon frame. */
+/** Rounded media slot, wrap an <img>, video, gradient, or icon frame. */
 export function CardMedia({
   className,
   ...props
@@ -179,7 +179,7 @@ export function CardMedia({
     <div
       className={cn(
         // The media is positioned so its intrinsic size never drives the card's
-        // height — it fills whatever box the layout gives it (e.g. self-stretch
+        // height, it fills whatever box the layout gives it (e.g. self-stretch
         // to match the content column).
         "relative shrink-0 overflow-hidden rounded-xl bg-muted [&>img]:absolute [&>img]:inset-0 [&>img]:size-full [&>img]:object-cover",
         className,

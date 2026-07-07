@@ -79,7 +79,7 @@ export interface SelectProps {
   required?: boolean;
   /** Helper text below the trigger. */
   description?: ReactNode;
-  /** Error message — sets the error style and replaces the description. */
+  /** Error message, sets the error style and replaces the description. */
   error?: ReactNode;
   invalid?: boolean;
   /** Message shown when there are no options. */

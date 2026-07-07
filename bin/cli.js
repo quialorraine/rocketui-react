@@ -40,16 +40,16 @@ function listComponents() {
 
 function help() {
   console.log(`${pkg.name} v${pkg.version}
-RocketUI — React component library & design system.
+RocketUI. React component library and design system.
 
 Usage:
   npx ${pkg.name} <command>
 
 Commands:
   init               Add the RocketUI reference to ./AGENTS.md so your
-                     AI agent uses the real API automatically
+                     coding agent uses the real API automatically
   list, components   List all available components
-  llms               Print the AI manifest (llms.txt) — pipe into an agent
+  llms               Print the AI manifest (llms.txt) for piping into an agent
   agents             Print the agent guide (AGENTS.md)
   version            Print the package version
   help               Show this help
@@ -89,32 +89,16 @@ switch (cmd) {
       writeFileSync(target, existing.trimEnd() + "\n\n" + block);
       console.log("Appended the RocketUI component reference to AGENTS.md.");
     }
-    // Claude Code reads CLAUDE.md, not AGENTS.md, so wire up an import.
-    const claudeTarget = join(process.cwd(), "CLAUDE.md");
-    const importLine = "@AGENTS.md";
-    let claude = null;
-    try {
-      claude = readFileSync(claudeTarget, "utf8");
-    } catch {
-      /* no existing file */
-    }
-    if (claude == null) {
-      writeFileSync(claudeTarget, importLine + "\n");
-      console.log("Created CLAUDE.md importing AGENTS.md (for Claude Code).");
-    } else if (!new RegExp(`^\\s*@AGENTS\\.md\\s*$`, "m").test(claude)) {
-      writeFileSync(claudeTarget, importLine + "\n" + claude.replace(/^\n+/, ""));
-      console.log("Added @AGENTS.md import to CLAUDE.md (for Claude Code).");
-    }
     console.log(
-      "Your AI agent (Cursor, Claude Code, …) will now read the RocketUI API automatically.",
+      "Your coding agent will now read the RocketUI API from AGENTS.md automatically.",
     );
     break;
   }
   case "list":
   case "components": {
     const names = listComponents();
-    console.log(`${pkg.name} — ${names.length} components:\n`);
-    for (const n of names) console.log("  \u2022 " + n);
+    console.log(`${pkg.name}: ${names.length} components:\n`);
+    for (const n of names) console.log("  - " + n);
     console.log(`\nImport: import { Button } from "${pkg.name}";`);
     break;
   }

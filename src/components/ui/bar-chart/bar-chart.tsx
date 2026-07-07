@@ -73,7 +73,7 @@ export function BarChart({
     }
   }, [hover, data]);
 
-  // Tooltip geometry (only when hovering) — clamped inside the chart bounds.
+  // Tooltip geometry (only when hovering), clamped inside the chart bounds.
   const gap = 8;
   const pointerH = 5;
   let tipLeft = 0;

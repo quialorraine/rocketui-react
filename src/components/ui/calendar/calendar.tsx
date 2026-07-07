@@ -68,16 +68,16 @@ export interface CalendarProps
   minDate?: Date;
   /** Latest selectable day (inclusive). */
   maxDate?: Date;
-  /** Disable arbitrary days (holidays, booked slots, …). */
+  /** Disable arbitrary days (holidays, booked slots). */
   isDateDisabled?: (date: Date) => boolean;
-  /** First column of the week: 0 = Sunday (default) … 6 = Saturday. */
+  /** First column of the week: 0 = Sunday (default) to 6 = Saturday. */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   /** Render days from the adjacent months to fill the grid. */
   showOutsideDays?: boolean;
   /** Locale used for month and weekday names. */
   locale?: string;
   size?: CalendarSize;
-  /** Footer content — helper text, or a ButtonGroup of actions. */
+  /** Footer content, helper text, or a ButtonGroup of actions. */
   children?: ReactNode;
 }
 
@@ -161,7 +161,7 @@ export function Calendar({
   /* -------- localized names -------- */
   const weekdayNames = useMemo(() => {
     const fmt = new Intl.DateTimeFormat(locale, { weekday: "short" });
-    // 2023-01-01 is a Sunday — a stable anchor for weekday labels.
+    // 2023-01-01 is a Sunday, a stable anchor for weekday labels.
     return Array.from({ length: 7 }, (_, i) =>
       fmt.format(new Date(2023, 0, 1 + ((i + weekStartsOn) % 7))),
     );
@@ -254,7 +254,7 @@ export function Calendar({
       ? monthLabel
       : view === "months"
         ? String(viewMonth.getFullYear())
-        : `${viewMonth.getFullYear() - 4} – ${viewMonth.getFullYear() + 7}`;
+        : `${viewMonth.getFullYear() - 4} to ${viewMonth.getFullYear() + 7}`;
 
   return (
     <div

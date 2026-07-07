@@ -20,7 +20,7 @@ import { cn } from "@/lib/cn";
 export interface AutocompleteOption {
   /** Unique key used for selection and React keys. */
   value: string;
-  /** Primary text — shown in the trigger and used for filtering. */
+  /** Primary text, shown in the trigger and used for filtering. */
   label: string;
   /** Secondary line beneath the label (e.g. an email or country). */
   description?: string;
@@ -96,7 +96,7 @@ export function Autocomplete({
   defaultValue,
   onValueChange,
   multiple = false,
-  placeholder = "Search…",
+  placeholder = "Search",
   size,
   disabled = false,
   clearable = true,

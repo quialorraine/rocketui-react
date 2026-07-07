@@ -37,7 +37,7 @@ export interface CheckboxProps
   checked?: boolean;
   /** Initial checked state (uncontrolled). */
   defaultChecked?: boolean;
-  /** Mixed state — visually a dash, `aria-checked="mixed"`. */
+  /** Mixed state, visually a dash, `aria-checked="mixed"`. */
   indeterminate?: boolean;
   /** Fired with the next checked value on toggle. */
   onCheckedChange?: (checked: boolean) => void;
@@ -74,7 +74,7 @@ export function Checkbox({
   const [internal, setInternal] = useState(defaultChecked);
   const isChecked = isControlled ? checked : internal;
 
-  // `indeterminate` is a property, not an attribute — set it imperatively.
+  // `indeterminate` is a property, not an attribute, set it imperatively.
   useEffect(() => {
     if (inputRef.current) inputRef.current.indeterminate = indeterminate;
   }, [indeterminate, isChecked]);

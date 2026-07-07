@@ -64,7 +64,7 @@ export interface NumberFieldProps {
   /** Hide the increment/decrement buttons (e.g. currency inputs). */
   hideSteppers?: boolean;
   /**
-   * `Intl.NumberFormat` options for the displayed value — currency, units,
+   * `Intl.NumberFormat` options for the displayed value, currency, units,
    * percent, grouping, decimal places.
    */
   formatOptions?: Intl.NumberFormatOptions;

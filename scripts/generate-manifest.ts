@@ -11,7 +11,13 @@
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { DOCS, PKG, type ComponentDoc } from "../src/demo/docs-registry";
+import {
+  DOCS,
+  GUIDE,
+  PICKER,
+  PKG,
+  type ComponentDoc,
+} from "../src/demo/docs-registry";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -32,7 +38,7 @@ function propsTable(doc: ComponentDoc): string {
       lines.push("| --- | --- | --- | --- |");
       for (const p of group.props) {
         const type = p.type.replace(/\|/g, "\\|");
-        const def = (p.default ?? "—").replace(/\|/g, "\\|");
+        const def = (p.default ?? "-").replace(/\|/g, "\\|");
         lines.push(`| \`${p.name}\` | \`${type}\` | \`${def}\` | ${p.description} |`);
       }
     }
@@ -42,9 +48,16 @@ function propsTable(doc: ComponentDoc): string {
 }
 
 function componentSection(id: string, doc: ComponentDoc): string {
+  const guide = GUIDE[id];
   const parts: string[] = [];
   parts.push(`### ${titleFromId(id)}`);
   parts.push("");
+  if (guide) {
+    parts.push(guide.summary);
+    parts.push("");
+    parts.push(`Use for: ${guide.keywords.join(", ")}.`);
+    parts.push("");
+  }
   parts.push(`Exports: ${doc.imports.map((n) => `\`${n}\``).join(", ")}`);
   parts.push("");
   parts.push("```tsx");
@@ -66,6 +79,36 @@ function componentSection(id: string, doc: ComponentDoc): string {
 const ids = Object.keys(DOCS).sort();
 const componentList = ids.map(titleFromId).join(", ");
 const reference = ids.map((id) => componentSection(id, DOCS[id])).join("\n\n---\n\n");
+
+/**
+ * The selection layer: a task-to-component table plus a one-line summary of
+ * every component. Read this before the full reference to route a plain need to
+ * the right component instead of rebuilding it from primitives.
+ */
+function pickerSection(): string {
+  const lines: string[] = [];
+  lines.push("## Choosing a component");
+  lines.push("");
+  lines.push(
+    "Scan this first. Match the outcome you want to a component before you compose one from primitives; a dedicated component almost always exists.",
+  );
+  lines.push("");
+  lines.push("| Need | Use | Avoid |");
+  lines.push("| --- | --- | --- |");
+  for (const row of PICKER) {
+    lines.push(`| ${row.need} | \`${row.use}\` | ${row.avoid ?? ""} |`);
+  }
+  lines.push("");
+  lines.push("### What each component is for");
+  lines.push("");
+  for (const id of ids) {
+    const guide = GUIDE[id];
+    if (guide) lines.push(`- **${titleFromId(id)}**: ${guide.summary}`);
+  }
+  return lines.join("\n");
+}
+
+const PICKER_SECTION = pickerSection();
 
 const INTRO = `RocketUI is a production-ready React + TypeScript component library and
 design system, styled with Tailwind CSS v4 and semantic design tokens.
@@ -93,6 +136,12 @@ const RULES = `## Guidelines for generating UI with RocketUI
 4. Compose layouts with utility classes; prefer the \`Card\` and \`Surface\`
    components as containers.
 5. Respect each component's documented prop types and defaults exactly.
+6. Before composing a pattern from primitives, check "Choosing a component"
+   below. A dedicated component usually already exists. For example, use
+   \`SearchField\` for a search box rather than a \`Button\` or bare \`Input\`.
+7. For status labels, use \`Chip\` with a semantic color (\`success\`, \`warning\`,
+   \`destructive\`, \`info\`) so states read as distinct. Do not map every status
+   to the neutral gray color.
 
 ## Styling & layout (important)
 
@@ -102,11 +151,11 @@ out of the box (including \`sm:\`/\`md:\`/\`lg:\` variants for the layout ones):
 
 - Display & flex: \`flex\`, \`grid\`, \`hidden\`, \`flex-row\`, \`flex-col\`,
   \`flex-wrap\`, \`items-*\`, \`justify-*\`, \`self-*\`, \`place-*\`
-- Grid: \`grid-cols-1\`…\`grid-cols-12\`, \`col-span-*\`, \`grid-rows-*\`, \`row-span-*\`
+- Grid: \`grid-cols-1\` to \`grid-cols-12\`, \`col-span-*\`, \`grid-rows-*\`, \`row-span-*\`
 - Spacing: \`gap-*\`, \`p*-*\`, \`m*-*\`, \`space-x-*\`, \`space-y-*\`
 - Sizing: \`w-full\`, \`w-1/2\`, \`h-full\`, \`h-screen\`, \`min-h-screen\`, \`size-*\`,
-  \`max-w-xs\`…\`max-w-7xl\`
-- Typography: \`text-xs\`…\`text-6xl\`, \`font-medium/semibold/bold\`,
+  \`max-w-xs\` to \`max-w-7xl\`
+- Typography: \`text-xs\` to \`text-6xl\`, \`font-medium/semibold/bold\`,
   \`text-left/center/right\`, \`leading-*\`, \`tracking-*\`, \`truncate\`
 - Position/effects: \`relative\`, \`absolute\`, \`sticky\`, \`inset-0\`, \`z-*\`,
   \`overflow-*\`, \`rounded-*\`, \`border*\`, \`shadow-*\`
@@ -129,16 +178,20 @@ const llms = `# RocketUI
 
 ${INTRO}
 
+${PICKER_SECTION}
+
 ## Components
 
 ${reference}
 `;
 
-const agents = `# RocketUI — Agent Guide
+const agents = `# RocketUI Agent Guide
 
 ${INTRO}
 
 ${RULES}
+
+${PICKER_SECTION}
 
 ## Component reference
 

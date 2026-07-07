@@ -24,6 +24,211 @@ export interface ComponentDoc {
   api: ApiGroup[];
 }
 
+/* -------------------------------------------------------------------------- */
+/*                           Component selection layer                         */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * One-line purpose plus intent keywords for every component. This is the layer
+ * a generating agent should read first: it maps a plain-language need to the
+ * right component so common patterns (a search box, a status label) resolve to
+ * a dedicated component instead of being rebuilt from primitives.
+ */
+export interface ComponentGuide {
+  /** One sentence describing what the component is for. */
+  summary: string;
+  /** Plain-language terms that should route to this component. */
+  keywords: string[];
+}
+
+export const GUIDE: Record<string, ComponentGuide> = {
+  button: {
+    summary: "Trigger an action or submit a form. Supports variants, sizes, loading, and icon-only.",
+    keywords: ["action", "submit", "cta", "click", "confirm"],
+  },
+  "button-group": {
+    summary: "Join related buttons into a single attached control, such as a segmented switch or toolbar.",
+    keywords: ["segmented", "toolbar", "grouped actions", "switcher"],
+  },
+  calendar: {
+    summary: "Pick a single day or a date range from a month grid.",
+    keywords: ["date", "datepicker", "day", "range", "schedule"],
+  },
+  card: {
+    summary: "Container surface that groups related content with padding, border, and optional media.",
+    keywords: ["container", "panel", "box", "tile"],
+  },
+  checkbox: {
+    summary: "Toggle one boolean option, with support for an indeterminate state.",
+    keywords: ["check", "boolean", "multi select", "agree", "opt in"],
+  },
+  chip: {
+    summary: "Compact label for a status, tag, or removable filter. Full semantic color range.",
+    keywords: ["tag", "status", "label", "pill", "filter", "badge"],
+  },
+  input: {
+    summary: "Single-line text field with label, description, and error states.",
+    keywords: ["text", "field", "form", "email", "password", "textbox"],
+  },
+  "input-otp": {
+    summary: "Segmented input for one-time codes and PINs.",
+    keywords: ["otp", "code", "pin", "verification", "2fa"],
+  },
+  "number-field": {
+    summary: "Numeric input with stepper buttons and locale formatting.",
+    keywords: ["number", "quantity", "stepper", "amount", "price", "currency"],
+  },
+  pagination: {
+    summary: "Move between pages of a data set.",
+    keywords: ["pages", "pager", "next", "previous"],
+  },
+  popover: {
+    summary: "Floating panel anchored to a trigger for secondary content.",
+    keywords: ["floating", "overlay", "anchored panel", "flyout"],
+  },
+  "radio-group": {
+    summary: "Choose exactly one option from a small, visible set.",
+    keywords: ["radio", "single choice", "options", "select one"],
+  },
+  "scroll-shadow": {
+    summary: "Fade the edges of a scrollable area to signal that more content is off-screen.",
+    keywords: ["scroll", "overflow", "fade", "edge shadow"],
+  },
+  "search-field": {
+    summary: "Text input built for search and filtering, with a search icon, a clear button, and clear-on-Escape.",
+    keywords: ["search", "filter", "find", "query", "lookup"],
+  },
+  select: {
+    summary: "Dropdown for picking one option from a list.",
+    keywords: ["dropdown", "select", "options", "picker", "combobox"],
+  },
+  skeleton: {
+    summary: "Placeholder blocks shown while content is loading.",
+    keywords: ["loading", "placeholder", "shimmer", "loader"],
+  },
+  slider: {
+    summary: "Pick a numeric value or range by dragging along a track.",
+    keywords: ["range", "slider", "value", "drag", "min max"],
+  },
+  surface: {
+    summary: "Low-level styled container primitive with configurable elevation.",
+    keywords: ["container", "panel", "elevation", "surface", "sheet"],
+  },
+  table: {
+    summary: "Show structured data in rows and columns, with selection and sorting.",
+    keywords: ["table", "grid", "rows", "columns", "data", "list"],
+  },
+  tabs: {
+    summary: "Switch between related views within the same space.",
+    keywords: ["tabs", "sections", "views", "segmented navigation"],
+  },
+  toggle: {
+    summary: "On or off switch for a single setting.",
+    keywords: ["switch", "toggle", "on off", "enable", "boolean setting"],
+  },
+  kbd: {
+    summary: "Render a keyboard key or shortcut inline.",
+    keywords: ["keyboard", "shortcut", "hotkey", "key"],
+  },
+  meter: {
+    summary: "Show a value inside a known range as a bar, such as usage or capacity.",
+    keywords: ["meter", "gauge", "usage", "capacity", "level", "progress"],
+  },
+  "dropdown-menu": {
+    summary: "Menu of actions opened from a trigger button.",
+    keywords: ["menu", "actions", "context menu", "overflow", "more options"],
+  },
+  avatar: {
+    summary: "Show a user image, initials, or a fallback icon.",
+    keywords: ["avatar", "user", "profile", "photo", "initials"],
+  },
+  badge: {
+    summary: "Small count or status indicator, often anchored to an icon or avatar.",
+    keywords: ["badge", "count", "notification", "dot", "indicator"],
+  },
+  breadcrumb: {
+    summary: "Show the path to the current page in a hierarchy.",
+    keywords: ["breadcrumb", "path", "navigation", "hierarchy"],
+  },
+  accordion: {
+    summary: "Expandable sections that reveal and hide content, such as an FAQ.",
+    keywords: ["accordion", "collapse", "expand", "faq", "disclosure"],
+  },
+  alert: {
+    summary: "Inline message that communicates status or important information.",
+    keywords: ["alert", "notice", "message", "banner", "warning"],
+  },
+  announcement: {
+    summary: "Highlight a new feature or update as a compact, clickable pill.",
+    keywords: ["announcement", "new", "callout", "promo", "whats new"],
+  },
+  "area-chart": {
+    summary: "Plot a trend over time as a filled area chart.",
+    keywords: ["chart", "area", "trend", "time series", "analytics"],
+  },
+  "bar-chart": {
+    summary: "Compare values across categories as bars.",
+    keywords: ["chart", "bar", "compare", "categories", "analytics"],
+  },
+  attachment: {
+    summary: "Show an uploaded file with its name, size, and a remove control.",
+    keywords: ["file", "upload", "attachment", "document"],
+  },
+  autocomplete: {
+    summary: "Text input with a filtered list of suggestions.",
+    keywords: ["autocomplete", "combobox", "suggestions", "typeahead", "search select"],
+  },
+  dialog: {
+    summary: "Modal overlay for a focused task or a confirmation.",
+    keywords: ["modal", "dialog", "popup", "confirm", "overlay"],
+  },
+};
+
+/**
+ * Curated task-to-component map. The first thing an agent should scan when it
+ * knows the outcome it wants but not the component name. `avoid` records the
+ * common wrong choice so it is not repeated.
+ */
+export interface PickerRow {
+  /** The outcome the author wants, in plain language. */
+  need: string;
+  /** The component (and key prop) to reach for. */
+  use: string;
+  /** The common mistake to avoid, if any. */
+  avoid?: string;
+}
+
+export const PICKER: PickerRow[] = [
+  { need: "Search or filter box", use: "SearchField", avoid: "rebuilding it from Button or Input" },
+  { need: "Single-line text entry", use: "Input" },
+  { need: "Multi-line text entry", use: "Textarea" },
+  { need: "Number, quantity, or price", use: "NumberField", avoid: "a plain Input for numeric values" },
+  { need: "One-time code or PIN", use: "InputOTP" },
+  { need: "Pick one option from a list", use: "Select", avoid: "a native select element" },
+  { need: "Pick one option with typeahead", use: "Autocomplete" },
+  { need: "Pick one option shown inline", use: "RadioGroup" },
+  { need: "Turn a single setting on or off", use: "Toggle", avoid: "a Checkbox for on and off settings" },
+  { need: "Select several options", use: "Checkbox" },
+  { need: "Status label (Paid, Pending, Refunded)", use: "Chip with color success, warning, or destructive", avoid: "a neutral gray Chip for every status" },
+  { need: "Tag or removable filter", use: "Chip with onRemove" },
+  { need: "Count or notification indicator", use: "Badge" },
+  { need: "User picture or initials", use: "Avatar" },
+  { need: "Structured data in rows and columns", use: "Table" },
+  { need: "Menu of actions from a button", use: "DropdownMenu" },
+  { need: "Floating panel next to a trigger", use: "Popover" },
+  { need: "Focused task or confirmation", use: "Dialog" },
+  { need: "Switch between related views", use: "Tabs" },
+  { need: "Expandable sections", use: "Accordion" },
+  { need: "Inline status message", use: "Alert" },
+  { need: "Loading placeholder", use: "Skeleton" },
+  { need: "Date or date range", use: "Calendar" },
+  { need: "Value within a range (usage, capacity)", use: "Meter" },
+  { need: "Trend over time", use: "AreaChart" },
+  { need: "Compare categories", use: "BarChart" },
+  { need: "Page navigation", use: "Pagination" },
+  { need: "Path within a hierarchy", use: "Breadcrumb" },
+];
+
 export function importCodeFor(doc: ComponentDoc): string {
   return `import { ${doc.imports.join(", ")} } from "${PKG}";`;
 }
@@ -132,7 +337,7 @@ export function Example() {
           { name: "minDate", type: "Date", description: "Earliest selectable day (inclusive)." },
           { name: "maxDate", type: "Date", description: "Latest selectable day (inclusive)." },
           { name: "isDateDisabled", type: "(date: Date) => boolean", description: "Disable arbitrary days." },
-          { name: "weekStartsOn", type: "0 | 1 | … | 6", default: "0", description: "First column of the week (0 = Sunday)." },
+          { name: "weekStartsOn", type: "0 | 1 | 2 | 3 | 4 | 5 | 6", default: "0", description: "First column of the week (0 = Sunday)." },
           { name: "showOutsideDays", type: "boolean", description: "Render days from adjacent months." },
           { name: "locale", type: "string", description: "Locale for month and weekday names." },
           { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Calendar size." },
@@ -191,7 +396,7 @@ export function Example() {
         props: [
           { name: "checked", type: "boolean", description: "Checked state (controlled)." },
           { name: "defaultChecked", type: "boolean", default: "false", description: "Initial checked state (uncontrolled)." },
-          { name: "indeterminate", type: "boolean", default: "false", description: "Mixed state — renders a dash." },
+          { name: "indeterminate", type: "boolean", default: "false", description: "Mixed state, shown as a horizontal bar." },
           { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Fired with the next checked value." },
           { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Box size." },
           { name: "label", type: "ReactNode", description: "Inline label next to the box." },
@@ -256,7 +461,7 @@ export function Example() {
       },
       {
         title: "Textarea",
-        description: "Shares the Input field props (label, error, size…) on a multi-line control and forwards native <textarea> attributes.",
+        description: "Shares the Input field props (label, error, size) on a multi-line control and forwards native <textarea> attributes.",
         props: [className],
       },
     ],
@@ -310,7 +515,7 @@ export function Example() {
           { name: "min", type: "number", description: "Minimum value." },
           { name: "max", type: "number", description: "Maximum value." },
           { name: "step", type: "number", default: "1", description: "Increment for steppers and arrows." },
-          { name: "formatOptions", type: "Intl.NumberFormatOptions", description: "Formatting (currency, percent, units…)." },
+          { name: "formatOptions", type: "Intl.NumberFormatOptions", description: "Formatting (currency, percent, units)." },
           { name: "locale", type: "string", description: "Locale for formatting." },
           { name: "startContent", type: "ReactNode", description: "Content before the value." },
           { name: "endContent", type: "ReactNode", description: "Content after the value." },
@@ -475,7 +680,7 @@ export function Example() {
     api: [
       {
         title: "SearchField",
-        description: "Also inherits the Input props (size, label, description, error…).",
+        description: "Also inherits the Input props (size, label, description, error).",
         props: [
           { name: "value", type: "string", description: "Query (controlled)." },
           { name: "defaultValue", type: "string", description: "Query (uncontrolled)." },
@@ -650,7 +855,7 @@ export function Example() {
     api: [
       {
         title: "Table",
-        description: "Root wrapper — renders a rounded, scrollable surface around a <table>.",
+        description: "Root wrapper that renders a rounded, scrollable surface around a <table>.",
         props: [
           { name: "containerProps", type: "ComponentProps<'div'>", description: "Props for the scrollable wrapper element." },
           className,
@@ -697,7 +902,7 @@ export function Example() {
     api: [
       {
         title: "Tabs",
-        description: "Root — owns the selected value and provides context.",
+        description: "Root element that owns the selected value and provides context.",
         props: [
           { name: "value", type: "string", description: "Selected tab value (controlled)." },
           { name: "defaultValue", type: "string", description: "Initial value (uncontrolled)." },
@@ -909,7 +1114,7 @@ export function Example() {
       },
       {
         title: "BadgeWrapper",
-        description: "Anchors a Badge to the corner of its child (icon, avatar…).",
+        description: "Anchors a Badge to the corner of its child (icon, avatar).",
         props: [
           { name: "badge", type: "ReactNode", description: "The badge element to overlay." },
           { name: "placement", type: '"top-right" | "top-left" | "bottom-right" | "bottom-left"', default: '"top-right"', description: "Corner to pin the badge." },
@@ -1158,7 +1363,7 @@ export function Example() {
 export function Example() {
   return (
     <Autocomplete
-      placeholder="Search…"
+      placeholder="Search"
       options={[
         { value: "1", label: "Alex" },
         { value: "2", label: "Jamie" },
@@ -1175,7 +1380,7 @@ export function Example() {
           { name: "defaultValue", type: "string | string[] | null", description: "Selected value(s) (uncontrolled)." },
           { name: "onValueChange", type: "(value) => void", description: "Fired with the new selection." },
           { name: "multiple", type: "boolean", default: "false", description: "Allow multiple selections (chips)." },
-          { name: "placeholder", type: "string", default: '"Search…"', description: "Empty-state text." },
+          { name: "placeholder", type: "string", default: '"Search"', description: "Empty-state text." },
           { name: "clearable", type: "boolean", default: "true", description: "Show a clear button." },
           { name: "filter", type: "(option, query) => boolean", description: "Custom filter predicate." },
           { name: "emptyMessage", type: "ReactNode", default: '"No results found"', description: "Shown when nothing matches." },

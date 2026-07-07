@@ -51,7 +51,7 @@ export type AnnouncementProps = AnnouncementBaseProps &
   );
 
 /**
- * A compact, clickable announcement pill — a coloured badge, a short message
+ * A compact, clickable announcement pill, a coloured badge, a short message
  * and a trailing arrow. Renders an anchor when `href` is set, a button
  * otherwise.
  */

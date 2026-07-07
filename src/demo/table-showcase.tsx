@@ -1,5 +1,13 @@
 import { useMemo, useState } from "react";
-import { CaretDown, CaretUp, Clock, DotsThree } from "@phosphor-icons/react";
+import {
+  CaretDown,
+  CaretUp,
+  CheckCircle,
+  Clock,
+  DotsThree,
+  PaperPlaneTilt,
+} from "@phosphor-icons/react";
+import type { ComponentType } from "react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,19 +42,19 @@ const PEOPLE: Person[] = [
   { id: 5273, name: "Riley", email: "riley@gmail.com", role: "Designer", status: "Invited", avatar: "https://i.pravatar.cc/80?img=45" },
 ];
 
-const STATUS_COLOR: Record<Person["status"], "neutral" | "success" | "info"> = {
-  Pending: "neutral",
-  Active: "success",
-  Invited: "info",
+const STATUS_STYLE: Record<
+  Person["status"],
+  { color: "warning" | "success" | "info"; icon: ComponentType<{ weight?: "fill" }> }
+> = {
+  Pending: { color: "warning", icon: Clock },
+  Active: { color: "success", icon: CheckCircle },
+  Invited: { color: "info", icon: PaperPlaneTilt },
 };
 
 function StatusChip({ status }: { status: Person["status"] }) {
+  const { color, icon: Icon } = STATUS_STYLE[status];
   return (
-    <Chip
-      variant="soft"
-      color={STATUS_COLOR[status]}
-      startIcon={<Clock weight="fill" />}
-    >
+    <Chip variant="soft" color={color} startIcon={<Icon weight="fill" />}>
       {status}
     </Chip>
   );

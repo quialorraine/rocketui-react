@@ -110,7 +110,7 @@ BreadcrumbLink.displayName = "BreadcrumbLink";
 
 export type BreadcrumbPageProps = ComponentPropsWithoutRef<"span">;
 
-/** The current page — the last, non-interactive crumb. */
+/** The current page, the last, non-interactive crumb. */
 export function BreadcrumbPage({ className, ...props }: BreadcrumbPageProps) {
   return (
     <span

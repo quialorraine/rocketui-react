@@ -41,7 +41,7 @@ export interface TextareaProps
   required?: boolean;
   /** Helper text rendered below the control. */
   description?: ReactNode;
-  /** Error message — sets the error style and replaces the description. */
+  /** Error message, sets the error style and replaces the description. */
   error?: ReactNode;
   /** Force the error style without a message. */
   invalid?: boolean;

@@ -74,7 +74,7 @@ export function ButtonGroup({
     <div
       role="group"
       className={cn(
-        // Segments must not individually shrink on press — the scale would open
+        // Segments must not individually shrink on press, the scale would open
         // gaps at the seams and reveal the surface behind as white lines.
         "isolate inline-flex w-fit [&>*]:relative [&>*]:active:!scale-100 [&>*:hover]:z-10 [&>*:focus-visible]:z-10",
         ORIENTATION[orientation],
