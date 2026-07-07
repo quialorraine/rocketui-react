@@ -1,0 +1,94 @@
+# RocketUI
+
+A production-ready React + TypeScript component library and design system,
+styled with Tailwind CSS v4 and driven entirely by semantic design tokens.
+
+- 35+ accessible, composable components
+- Token-based theming with built-in light/dark mode
+- Small, consistent prop language (`size`, `variant`, `disabled`, `loading`, `className`)
+- Ships an AI-readable manifest so agents can generate UIs from the real API
+
+## Installation
+
+```bash
+npm install @rocketui/react
+```
+
+Import the stylesheet once at the root of your app:
+
+```tsx
+import "@rocketui/react/styles.css";
+```
+
+## Usage
+
+```tsx
+import { Card, Button, Badge } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Card className="p-6">
+      <Badge color="success">New</Badge>
+      <Button variant="solid">Get started</Button>
+    </Card>
+  );
+}
+```
+
+## Theming
+
+Theming is CSS-variable based. Override the tokens on `:root` and toggle a
+`.dark` class on `<html>` to switch modes:
+
+```css
+:root {
+  --primary: #3873ff;
+  --background: #f4f4f5;
+  --foreground: #18181b;
+}
+
+.dark {
+  --primary: #4c82ff;
+  --background: #09090b;
+  --foreground: #fafafa;
+}
+```
+
+Always style with the semantic token utilities (`bg-card`, `text-foreground`,
+`text-muted-foreground`, `border-border`, `bg-primary`, …) rather than hardcoded
+colours, so themes keep working.
+
+## Using with AI agents
+
+The package ships two generated files that describe the entire component API in
+a machine-readable form:
+
+- **`llms.txt`** — the full component reference (exports, props, usage) meant to
+  be fed into an LLM's context.
+- **`AGENTS.md`** — the same reference plus authoring guidelines.
+
+Point your agent at one of these files, then prompt it to build a screen — for
+example: *"build a mini dashboard using RocketUI components"*. Because the agent
+sees the exact exports and prop types, it composes UIs against the real API
+instead of guessing.
+
+Both files are generated from a single source of truth
+(`src/demo/docs-registry.ts`), which is also intended to back a future MCP
+server. Regenerate them with:
+
+```bash
+npm run generate:manifest
+```
+
+## Development
+
+```bash
+npm run dev            # run the docs site
+npm run typecheck      # type-check the project
+npm run build:lib      # build the publishable package into dist/
+npm run generate:manifest  # regenerate llms.txt and AGENTS.md
+```
+
+## License
+
+MIT

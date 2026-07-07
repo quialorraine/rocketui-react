@@ -1,0 +1,1510 @@
+# RocketUI — Agent Guide
+
+RocketUI is a production-ready React + TypeScript component library and
+design system, styled with Tailwind CSS v4 and semantic design tokens.
+
+- Package: `@rocketui/react`
+- Install: `npm install @rocketui/react`
+- Import the stylesheet once at your app root: `import "@rocketui/react/styles.css";`
+- Theming is token-driven: toggle a `.dark` class on `<html>` for dark mode.
+
+Every component accepts `className` (merged via `cn`) and forwards native HTML
+attributes. Interactive components share the same prop language where relevant:
+`size`, `variant`, `disabled`, `loading`.
+
+## Guidelines for generating UI with RocketUI
+
+1. Only use components exported from `@rocketui/react`. Do not invent components or props
+   that are not listed in the reference below.
+2. Import components from `@rocketui/react` and import `@rocketui/react/styles.css` once at the
+   app root.
+3. Never hardcode colours. Use semantic Tailwind token classes (`bg-background`,
+   `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border`,
+   `bg-primary`, `text-primary-foreground`, `bg-muted`, `bg-accent`,
+   `text-destructive`, `text-success`, `text-warning`) so light/dark theming
+   keeps working.
+4. Compose layouts with utility classes; prefer the `Card` and `Surface`
+   components as containers.
+5. Respect each component's documented prop types and defaults exactly.
+
+## Available components
+
+Accordion, Alert, Announcement, Area Chart, Attachment, Autocomplete, Avatar, Badge, Bar Chart, Breadcrumb, Button, Button Group, Calendar, Card, Checkbox, Chip, Dialog, Dropdown Menu, Input, Input Otp, Kbd, Meter, Number Field, Pagination, Popover, Radio Group, Scroll Shadow, Search Field, Select, Skeleton, Slider, Surface, Table, Tabs, Toggle.
+
+## Component reference
+
+### Accordion
+
+Exports: `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@rocketui/react";
+```
+
+#### Accordion
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `"single" \| "multiple"` | `"single"` | How many items can be open. |
+| `collapsible` | `boolean` | `false` | Allow closing the open item in single mode. |
+| `value` | `string \| string[]` | `—` | Open value(s) (controlled). |
+| `defaultValue` | `string \| string[]` | `—` | Open value(s) (uncontrolled). |
+| `onValueChange` | `(value) => void` | `—` | Fired when open value(s) change. |
+| `indicator` | `"chevron" \| "plus"` | `"chevron"` | Trigger indicator. |
+| `disabled` | `boolean` | `false` | Disable every item. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### AccordionItem / AccordionTrigger / AccordionContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Item identifier (AccordionItem). |
+| `disabled` | `boolean` | `—` | Disable a single item. |
+
+Usage:
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Accordion type="single" collapsible>
+      <AccordionItem value="a">
+        <AccordionTrigger>Question</AccordionTrigger>
+        <AccordionContent>Answer</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+
+---
+
+### Alert
+
+Exports: `Alert`, `AlertDescription`, `AlertLink`
+
+```tsx
+import { Alert, AlertDescription, AlertLink } from "@rocketui/react";
+```
+
+#### Alert
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "info" \| "success" \| "warning" \| "destructive"` | `"default"` | Status style and default icon. |
+| `size` | `"sm" \| "md"` | `"md"` | Alert size. |
+| `title` | `ReactNode` | `—` | Heading line. |
+| `icon` | `ReactNode` | `—` | Leading media; pass null to hide. |
+| `action` | `ReactNode` | `—` | Trailing inline action. |
+| `onClose` | `() => void` | `—` | Show a dismiss button and fire on press. |
+| `closeLabel` | `string` | `"Dismiss"` | Accessible label for dismiss. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Alert, AlertDescription } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Alert variant="success" title="Saved">
+      <AlertDescription>Your changes were saved.</AlertDescription>
+    </Alert>
+  );
+}
+```
+
+---
+
+### Announcement
+
+Exports: `Announcement`
+
+```tsx
+import { Announcement } from "@rocketui/react";
+```
+
+#### Announcement
+
+Renders an anchor when href is set, otherwise a button. Forwards native attributes accordingly.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `tag` | `ReactNode` | `—` | Leading badge label (optional). |
+| `color` | `"neutral" \| "primary" \| "success" \| "warning" \| "destructive" \| "info"` | `"neutral"` | Colour of the leading badge. |
+| `icon` | `ReactNode` | `<ArrowRight />` | Trailing icon; pass null to hide it. |
+| `href` | `string` | `—` | When set, renders an anchor. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Announcement } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Announcement tag="New feature" href="/changelog">
+      Meet your AI Relocation Assistant
+    </Announcement>
+  );
+}
+```
+
+---
+
+### Area Chart
+
+Exports: `AreaChart`
+
+```tsx
+import { AreaChart } from "@rocketui/react";
+```
+
+#### AreaChart
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `number[]` | `—` | Series values, plotted left to right. Required. |
+| `labels` | `(string \| number)[]` | `—` | Optional x-axis labels, one per point. |
+| `height` | `number` | `180` | Chart height in pixels (excludes labels). |
+| `color` | `string` | `var(--color-primary)` | Line and fill colour (any CSS color). |
+| `gridLines` | `number` | `4` | Number of horizontal grid lines; 0 hides them. |
+| `tooltip` | `(point: { index: number; value: number }) => ReactNode` | `—` | Render tooltip contents for the hovered point. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { AreaChart } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <AreaChart
+      data={[12, 18, 15, 22, 30, 26, 34]}
+      labels={[1, 2, 3, 4, 5, 6, 7]}
+      tooltip={({ value }) => <span>{value}GB</span>}
+    />
+  );
+}
+```
+
+---
+
+### Attachment
+
+Exports: `Attachment`, `AttachmentTile`
+
+```tsx
+import { Attachment, AttachmentTile } from "@rocketui/react";
+```
+
+#### AttachmentTile
+
+Square media preview for grids.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | `string` | `—` | Image/poster source. |
+| `type` | `"image" \| "video" \| "file"` | `—` | Preview state. Defaults to image when src is set, otherwise file. |
+| `size` | `number` | `80` | Square edge length in pixels. |
+| `onRemove` | `() => void` | `—` | Show a remove button and fire on press. |
+| `onClick` | `() => void` | `—` | Make the tile clickable. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### Attachment
+
+Compact list row with a thumbnail and text.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `ReactNode` | `—` | Primary line. Required. |
+| `description` | `ReactNode` | `—` | Secondary line. |
+| `src` | `string` | `—` | Thumbnail source. |
+| `type` | `"image" \| "video" \| "file"` | `—` | Thumbnail state. |
+| `thumbnailSize` | `number` | `42` | Thumbnail edge length in pixels. |
+| `action` | `ReactNode` | `—` | Trailing content (e.g. a menu button). |
+| `onRemove` | `() => void` | `—` | Show a dismiss button when no action is given. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Attachment, AttachmentTile } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <div className="flex gap-3">
+      <AttachmentTile src="/photo.jpg" onRemove={() => {}} />
+      <AttachmentTile type="video" src="/clip.jpg" onRemove={() => {}} />
+      <AttachmentTile type="file" onRemove={() => {}} />
+    </div>
+  );
+}
+```
+
+---
+
+### Autocomplete
+
+Exports: `Autocomplete`
+
+```tsx
+import { Autocomplete } from "@rocketui/react";
+```
+
+#### Autocomplete
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | `AutocompleteOption[]` | `—` | The list of options. |
+| `value` | `string \| string[] \| null` | `—` | Selected value(s) (controlled). |
+| `defaultValue` | `string \| string[] \| null` | `—` | Selected value(s) (uncontrolled). |
+| `onValueChange` | `(value) => void` | `—` | Fired with the new selection. |
+| `multiple` | `boolean` | `false` | Allow multiple selections (chips). |
+| `placeholder` | `string` | `"Search…"` | Empty-state text. |
+| `clearable` | `boolean` | `true` | Show a clear button. |
+| `filter` | `(option, query) => boolean` | `—` | Custom filter predicate. |
+| `emptyMessage` | `ReactNode` | `"No results found"` | Shown when nothing matches. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control height. |
+| `disabled` | `boolean` | `false` | Disable the field. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Autocomplete } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Autocomplete
+      placeholder="Search…"
+      options={[
+        { value: "1", label: "Alex" },
+        { value: "2", label: "Jamie" },
+      ]}
+    />
+  );
+}
+```
+
+---
+
+### Avatar
+
+Exports: `Avatar`, `AvatarGroup`
+
+```tsx
+import { Avatar, AvatarGroup } from "@rocketui/react";
+```
+
+#### Avatar
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | `string` | `—` | Image source; falls back to initials/icon. |
+| `name` | `string` | `—` | Display name used for initials and alt. |
+| `initials` | `string` | `—` | Explicit initials override. |
+| `alt` | `string` | `—` | Accessible label for the image. |
+| `fallback` | `ReactNode` | `—` | Custom fallback node. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Avatar size. |
+| `shape` | `"circle" \| "rounded"` | `"circle"` | Corner shape. |
+| `color` | `"neutral" \| "brand"` | `"neutral"` | Fallback color. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### AvatarGroup
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `max` | `number` | `—` | Max avatars before a +N overflow chip. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Avatar } from "@rocketui/react";
+
+export function Example() {
+  return <Avatar name="Alex Morgan" src="/alex.jpg" />;
+}
+```
+
+---
+
+### Badge
+
+Exports: `Badge`, `BadgeWrapper`
+
+```tsx
+import { Badge, BadgeWrapper } from "@rocketui/react";
+```
+
+#### Badge
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `color` | `"primary" \| "neutral" \| "destructive" \| "success" \| "warning" \| "info"` | `"primary"` | Fill/dot color. |
+| `size` | `"sm" \| "md"` | `"md"` | Badge size. |
+| `dot` | `boolean` | `false` | Render a bare status dot. |
+| `max` | `number` | `—` | Cap numeric children as N+ (e.g. 99+). |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### BadgeWrapper
+
+Anchors a Badge to the corner of its child (icon, avatar…).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `badge` | `ReactNode` | `—` | The badge element to overlay. |
+| `placement` | `"top-right" \| "top-left" \| "bottom-right" \| "bottom-left"` | `"top-right"` | Corner to pin the badge. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Badge } from "@rocketui/react";
+
+export function Example() {
+  return <Badge color="primary">New</Badge>;
+}
+```
+
+---
+
+### Bar Chart
+
+Exports: `BarChart`
+
+```tsx
+import { BarChart } from "@rocketui/react";
+```
+
+#### BarChart
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `number[]` | `—` | Series values, plotted left to right. Required. |
+| `labels` | `(string \| number)[]` | `—` | Optional x-axis labels, one per bar. |
+| `height` | `number` | `180` | Bars area height in pixels (excludes labels). |
+| `color` | `string` | `var(--color-primary)` | Highlight colour for the active bar. |
+| `activeIndex` | `number` | `—` | Bar highlighted by default (when not hovering). |
+| `gridLines` | `number` | `4` | Number of horizontal grid lines; 0 hides them. |
+| `tooltip` | `(bar: { index: number; value: number }) => ReactNode` | `—` | Render tooltip contents for the active bar. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { BarChart } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <BarChart
+      data={[8, 6, 5, 7, 7, 12, 3, 2, 6]}
+      activeIndex={5}
+      tooltip={({ value }) => <span>{value}GB</span>}
+    />
+  );
+}
+```
+
+---
+
+### Breadcrumb
+
+Exports: `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator`, `BreadcrumbEllipsis`
+
+```tsx
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@rocketui/react";
+```
+
+#### Breadcrumb
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `separator` | `ReactNode` | `<CaretRight />` | Node rendered between items. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### BreadcrumbList / Item / Link / Page / Separator / Ellipsis
+
+Structural parts. Link and Page mark interactive vs. current crumbs.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+        <BreadcrumbItem><BreadcrumbPage>Settings</BreadcrumbPage></BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+
+---
+
+### Button
+
+Exports: `Button`
+
+```tsx
+import { Button } from "@rocketui/react";
+```
+
+#### Button
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"solid" \| "soft" \| "outline" \| "ghost" \| "link"` | `"solid"` | Visual style of the button. |
+| `color` | `"primary" \| "neutral" \| "destructive"` | `"primary"` | Semantic color. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control height and padding. |
+| `iconOnly` | `boolean` | `false` | Render a square icon-only button. |
+| `fullWidth` | `boolean` | `false` | Stretch to the container width. |
+| `loading` | `boolean` | `false` | Show a spinner and block interaction. |
+| `startIcon` | `ReactNode` | `—` | Icon before the label (hidden while loading). |
+| `endIcon` | `ReactNode` | `—` | Icon after the label. |
+| `asChild` | `boolean` | `false` | Render styles onto the child element. |
+| `disabled` | `boolean` | `false` | Disable the button. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Button } from "@rocketui/react";
+
+export function Example() {
+  return <Button>Get started</Button>;
+}
+```
+
+---
+
+### Button Group
+
+Exports: `ButtonGroup`, `Button`
+
+```tsx
+import { ButtonGroup, Button } from "@rocketui/react";
+```
+
+#### ButtonGroup
+
+Configure the whole group once; each child button can override its own props.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Stacking direction. |
+| `variant` | `ButtonProps['variant']` | `—` | Default variant for child buttons. |
+| `color` | `ButtonProps['color']` | `—` | Default color for child buttons. |
+| `size` | `ButtonProps['size']` | `—` | Default size for child buttons. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { ButtonGroup, Button } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <ButtonGroup>
+      <Button>Previous</Button>
+      <Button>Next</Button>
+    </ButtonGroup>
+  );
+}
+```
+
+---
+
+### Calendar
+
+Exports: `Calendar`
+
+```tsx
+import { Calendar } from "@rocketui/react";
+```
+
+#### Calendar
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `Date \| null` | `—` | Selected date (controlled). |
+| `defaultValue` | `Date \| null` | `—` | Selected date (uncontrolled). |
+| `onChange` | `(date: Date) => void` | `—` | Fired when a day is picked. |
+| `month` | `Date` | `—` | Visible month (controlled). |
+| `defaultMonth` | `Date` | `—` | Initial visible month (uncontrolled). |
+| `onMonthChange` | `(month: Date) => void` | `—` | Fired when the visible month changes. |
+| `minDate` | `Date` | `—` | Earliest selectable day (inclusive). |
+| `maxDate` | `Date` | `—` | Latest selectable day (inclusive). |
+| `isDateDisabled` | `(date: Date) => boolean` | `—` | Disable arbitrary days. |
+| `weekStartsOn` | `0 \| 1 \| … \| 6` | `0` | First column of the week (0 = Sunday). |
+| `showOutsideDays` | `boolean` | `—` | Render days from adjacent months. |
+| `locale` | `string` | `—` | Locale for month and weekday names. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Calendar size. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Calendar } from "@rocketui/react";
+import { useState } from "react";
+
+export function Example() {
+  const [date, setDate] = useState<Date | null>(null);
+  return <Calendar value={date} onChange={setDate} />;
+}
+```
+
+---
+
+### Card
+
+Exports: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardMedia`
+
+```tsx
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardMedia } from "@rocketui/react";
+```
+
+#### Card
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"elevated" \| "outline" \| "ghost"` | `"elevated"` | Surface style. |
+| `padding` | `"none" \| "sm" \| "md" \| "lg"` | `"md"` | Inner padding. |
+| `interactive` | `boolean` | `false` | Add hover/focus affordances. |
+| `asChild` | `boolean` | `false` | Render styles onto the child element. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### CardHeader / CardTitle / CardDescription / CardContent / CardFooter / CardMedia
+
+Structural slots. Each accepts native attributes and className.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Title</CardTitle>
+        <CardDescription>Supporting copy.</CardDescription>
+      </CardHeader>
+      <CardContent>Body content</CardContent>
+    </Card>
+  );
+}
+```
+
+---
+
+### Checkbox
+
+Exports: `Checkbox`
+
+```tsx
+import { Checkbox } from "@rocketui/react";
+```
+
+#### Checkbox
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `boolean` | `—` | Checked state (controlled). |
+| `defaultChecked` | `boolean` | `false` | Initial checked state (uncontrolled). |
+| `indeterminate` | `boolean` | `false` | Mixed state — renders a dash. |
+| `onCheckedChange` | `(checked: boolean) => void` | `—` | Fired with the next checked value. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Box size. |
+| `label` | `ReactNode` | `—` | Inline label next to the box. |
+| `description` | `ReactNode` | `—` | Helper text under the label. |
+| `disabled` | `boolean` | `false` | Disable the checkbox. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Checkbox } from "@rocketui/react";
+
+export function Example() {
+  return <Checkbox label="Accept terms" />;
+}
+```
+
+---
+
+### Chip
+
+Exports: `Chip`
+
+```tsx
+import { Chip } from "@rocketui/react";
+```
+
+#### Chip
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"solid" \| "soft" \| "outline"` | `"solid"` | Visual style. |
+| `color` | `"neutral" \| "primary" \| "success" \| "warning" \| "destructive" \| "info"` | `"neutral"` | Semantic color. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Chip size. |
+| `interactive` | `boolean` | `false` | Add hover/press affordances. |
+| `startIcon` | `ReactNode` | `—` | Icon before the label. |
+| `onRemove` | `() => void` | `—` | Show a remove button and fire on press. |
+| `removeLabel` | `string` | `"Remove"` | Accessible label for the remove button. |
+| `disabled` | `boolean` | `false` | Disable the chip. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Chip } from "@rocketui/react";
+
+export function Example() {
+  return <Chip color="primary">Label</Chip>;
+}
+```
+
+---
+
+### Dialog
+
+Exports: `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose`
+
+```tsx
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@rocketui/react";
+```
+
+#### Dialog
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `—` | Open state (controlled). |
+| `defaultOpen` | `boolean` | `false` | Initial open state. |
+| `onOpenChange` | `(open: boolean) => void` | `—` | Fired when open state changes. |
+
+#### DialogContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Dialog width. |
+| `hideClose` | `boolean` | `false` | Hide the built-in top-right close button. |
+| `closeOnOverlayClick` | `boolean` | `true` | Close when the overlay is clicked. |
+| `closeOnEscape` | `boolean` | `true` | Close when Escape is pressed. |
+| `role` | `"dialog" \| "alertdialog"` | `"dialog"` | Use alertdialog for decision flows. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### DialogHeader
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `ReactNode` | `—` | Leading feature icon. |
+| `align` | `"row" \| "column"` | `"row"` | Icon beside or above the title. |
+
+Usage:
+
+```tsx
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Button } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Open</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Title</DialogTitle>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+---
+
+### Dropdown Menu
+
+Exports: `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`
+
+```tsx
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@rocketui/react";
+```
+
+#### DropdownMenu
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `—` | Open state (controlled). |
+| `defaultOpen` | `boolean` | `false` | Initial open state. |
+| `onOpenChange` | `(open: boolean) => void` | `—` | Fired when open state changes. |
+
+#### DropdownMenuContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Preferred side. |
+| `align` | `"start" \| "center" \| "end"` | `"start"` | Alignment along the side. |
+| `sideOffset` | `number` | `8` | Gap between trigger and menu. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### DropdownMenuItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onSelect` | `() => void` | `—` | Fired on click / Enter / Space. |
+| `icon` | `ReactNode` | `—` | Leading icon. |
+| `shortcut` | `ReactNode` | `—` | Trailing keyboard shortcut hint. |
+| `description` | `ReactNode` | `—` | Secondary line beneath the label. |
+| `destructive` | `boolean` | `false` | Style as a dangerous action. |
+| `closeOnSelect` | `boolean` | `true` | Close the menu after selecting. |
+| `disabled` | `boolean` | `false` | Disable the item. |
+
+Usage:
+
+```tsx
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, Button } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button>Open</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>Settings</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+```
+
+---
+
+### Input
+
+Exports: `Input`, `Textarea`
+
+```tsx
+import { Input, Textarea } from "@rocketui/react";
+```
+
+#### Input
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control height. |
+| `label` | `ReactNode` | `—` | Label above the control. |
+| `required` | `boolean` | `false` | Add a required asterisk. |
+| `description` | `ReactNode` | `—` | Helper text below the control. |
+| `error` | `ReactNode` | `—` | Error message; sets the error style. |
+| `invalid` | `boolean` | `false` | Force the error style. |
+| `success` | `boolean` | `false` | Apply the success style. |
+| `startContent` | `ReactNode` | `—` | Content before the input. |
+| `endContent` | `ReactNode` | `—` | Content after the input. |
+| `inputClassName` | `string` | `—` | Class applied to the <input> element. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### Textarea
+
+Shares the Input field props (label, error, size…) on a multi-line control and forwards native <textarea> attributes.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Input } from "@rocketui/react";
+
+export function Example() {
+  return <Input label="Email" placeholder="you@example.com" />;
+}
+```
+
+---
+
+### Input Otp
+
+Exports: `InputOTP`
+
+```tsx
+import { InputOTP } from "@rocketui/react";
+```
+
+#### InputOTP
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `length` | `number` | `6` | Number of code cells. |
+| `value` | `string` | `—` | Controlled value. |
+| `defaultValue` | `string` | `—` | Uncontrolled initial value. |
+| `onChange` | `(value: string) => void` | `—` | Fired on every change. |
+| `onComplete` | `(value: string) => void` | `—` | Fired once every cell is filled. |
+| `type` | `"numeric" \| "alphanumeric"` | `"numeric"` | Accepted characters. |
+| `mask` | `boolean` | `false` | Render characters as dots. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Cell size. |
+| `invalid` | `boolean` | `false` | Apply the error style. |
+| `disabled` | `boolean` | `false` | Disable the field. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { InputOTP } from "@rocketui/react";
+
+export function Example() {
+  return <InputOTP length={6} onComplete={(code) => console.log(code)} />;
+}
+```
+
+---
+
+### Kbd
+
+Exports: `Kbd`
+
+```tsx
+import { Kbd } from "@rocketui/react";
+```
+
+#### Kbd
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `keys` | `KbdKey \| KbdKey[]` | `—` | Named modifier/symbol keys rendered as glyphs. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Key size. |
+| `children` | `ReactNode` | `—` | Literal key label, e.g. "K". |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Kbd } from "@rocketui/react";
+
+export function Example() {
+  return <Kbd keys={["command"]}>K</Kbd>;
+}
+```
+
+---
+
+### Meter
+
+Exports: `Meter`
+
+```tsx
+import { Meter } from "@rocketui/react";
+```
+
+#### Meter
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | `—` | Current value (required). |
+| `min` | `number` | `0` | Lower bound. |
+| `max` | `number` | `100` | Upper bound. |
+| `label` | `ReactNode` | `—` | Label above the track. |
+| `showValue` | `boolean` | `true` | Show the value on the right. |
+| `formatValue` | `(value, percent) => ReactNode` | `—` | Custom value formatter. |
+| `color` | `"primary" \| "info" \| "success" \| "warning" \| "destructive"` | `"primary"` | Fill color. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Track thickness. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Meter } from "@rocketui/react";
+
+export function Example() {
+  return <Meter label="Storage" value={60} />;
+}
+```
+
+---
+
+### Number Field
+
+Exports: `NumberField`
+
+```tsx
+import { NumberField } from "@rocketui/react";
+```
+
+#### NumberField
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | `—` | Controlled value. |
+| `defaultValue` | `number` | `—` | Uncontrolled initial value. |
+| `onChange` | `(value: number \| null) => void` | `—` | Fired with the committed, clamped value. |
+| `min` | `number` | `—` | Minimum value. |
+| `max` | `number` | `—` | Maximum value. |
+| `step` | `number` | `1` | Increment for steppers and arrows. |
+| `formatOptions` | `Intl.NumberFormatOptions` | `—` | Formatting (currency, percent, units…). |
+| `locale` | `string` | `—` | Locale for formatting. |
+| `startContent` | `ReactNode` | `—` | Content before the value. |
+| `endContent` | `ReactNode` | `—` | Content after the value. |
+| `hideSteppers` | `boolean` | `false` | Hide the +/- buttons. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control height. |
+| `label` | `ReactNode` | `—` | Label above the control. |
+| `disabled` | `boolean` | `false` | Disable the field. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { NumberField } from "@rocketui/react";
+import { useState } from "react";
+
+export function Example() {
+  const [value, setValue] = useState(1);
+  return <NumberField label="Quantity" value={value} onChange={setValue} />;
+}
+```
+
+---
+
+### Pagination
+
+Exports: `Pagination`
+
+```tsx
+import { Pagination } from "@rocketui/react";
+```
+
+#### Pagination
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `total` | `number` | `—` | Total number of pages. |
+| `page` | `number` | `—` | Active page (controlled). |
+| `defaultPage` | `number` | `1` | Active page (uncontrolled). |
+| `onPageChange` | `(page: number) => void` | `—` | Fired when the page changes. |
+| `siblings` | `number` | `1` | Pages shown around the current page. |
+| `boundaries` | `number` | `1` | Pages shown at the start/end. |
+| `showControls` | `boolean` | `true` | Show Previous/Next buttons. |
+| `showPages` | `boolean` | `true` | Show numbered page links. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control size. |
+| `disabled` | `boolean` | `false` | Disable navigation. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Pagination } from "@rocketui/react";
+import { useState } from "react";
+
+export function Example() {
+  const [page, setPage] = useState(1);
+  return <Pagination total={10} page={page} onPageChange={setPage} />;
+}
+```
+
+---
+
+### Popover
+
+Exports: `Popover`, `PopoverTrigger`, `PopoverContent`
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent } from "@rocketui/react";
+```
+
+#### Popover
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `—` | Open state (controlled). |
+| `defaultOpen` | `boolean` | `false` | Initial open state (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void` | `—` | Fired when open state changes. |
+
+#### PopoverTrigger
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | `false` | Merge props onto the child element. |
+
+#### PopoverContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"top" \| "bottom" \| "left" \| "right"` | `"bottom"` | Preferred side. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment along the side. |
+| `sideOffset` | `number` | `8` | Gap between trigger and content. |
+| `showArrow` | `boolean` | `true` | Render the pointing arrow. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent, Button } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button>Open</Button>
+      </PopoverTrigger>
+      <PopoverContent>Popover content</PopoverContent>
+    </Popover>
+  );
+}
+```
+
+---
+
+### Radio Group
+
+Exports: `RadioGroup`, `Radio`, `RadioCard`
+
+```tsx
+import { RadioGroup, Radio, RadioCard } from "@rocketui/react";
+```
+
+#### RadioGroup
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Selected value (controlled). |
+| `defaultValue` | `string` | `—` | Selected value (uncontrolled). |
+| `onValueChange` | `(value: string) => void` | `—` | Fired with the new value. |
+| `name` | `string` | `—` | Shared form field name. |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Layout direction. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Control size. |
+| `disabled` | `boolean` | `false` | Disable every option. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### Radio / RadioCard
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | The option's value (required). |
+| `label` | `ReactNode` | `—` | Option label. |
+| `description` | `ReactNode` | `—` | Helper text under the label. |
+| `icon` | `ReactNode` | `—` | Leading media (RadioCard only). |
+| `disabled` | `boolean` | `false` | Disable this option. |
+
+Usage:
+
+```tsx
+import { RadioGroup, Radio } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <RadioGroup defaultValue="a">
+      <Radio value="a" label="Option A" />
+      <Radio value="b" label="Option B" />
+    </RadioGroup>
+  );
+}
+```
+
+---
+
+### Scroll Shadow
+
+Exports: `ScrollShadow`
+
+```tsx
+import { ScrollShadow } from "@rocketui/react";
+```
+
+#### ScrollShadow
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Scroll axis the shadow reacts to. |
+| `size` | `number` | `40` | Length of the fade in pixels. |
+| `offset` | `number` | `0` | Slack before an edge shadow appears. |
+| `isEnabled` | `boolean` | `true` | Toggle the fade effect. |
+| `hideScrollBar` | `boolean` | `false` | Hide the native scrollbar. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { ScrollShadow } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <ScrollShadow className="max-h-40">
+      <p>{longText}</p>
+    </ScrollShadow>
+  );
+}
+```
+
+---
+
+### Search Field
+
+Exports: `SearchField`
+
+```tsx
+import { SearchField } from "@rocketui/react";
+```
+
+#### SearchField
+
+Also inherits the Input props (size, label, description, error…).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Query (controlled). |
+| `defaultValue` | `string` | `—` | Query (uncontrolled). |
+| `onValueChange` | `(value: string) => void` | `—` | Fired on every change and on clear. |
+| `onClear` | `() => void` | `—` | Fired when cleared via the button or Escape. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { SearchField } from "@rocketui/react";
+import { useState } from "react";
+
+export function Example() {
+  const [query, setQuery] = useState("");
+  return <SearchField label="Search" value={query} onValueChange={setQuery} />;
+}
+```
+
+---
+
+### Select
+
+Exports: `Select`
+
+```tsx
+import { Select } from "@rocketui/react";
+```
+
+#### Select
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `options` | `SelectOption[]` | `—` | The list of selectable options. |
+| `value` | `string \| null` | `—` | Selected value (controlled). |
+| `defaultValue` | `string \| null` | `—` | Selected value (uncontrolled). |
+| `onValueChange` | `(value: string) => void` | `—` | Fired with the new value. |
+| `placeholder` | `string` | `"Select an option"` | Empty-state text. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Trigger height. |
+| `label` | `ReactNode` | `—` | Label above the trigger. |
+| `error` | `ReactNode` | `—` | Error message; sets the error style. |
+| `disabled` | `boolean` | `false` | Disable the select. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### SelectOption
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Unique value. |
+| `label` | `string` | `—` | Display text. |
+| `description` | `string` | `—` | Secondary line under the label. |
+| `group` | `string` | `—` | Section heading for consecutive options. |
+| `disabled` | `boolean` | `—` | Disable this option. |
+
+Usage:
+
+```tsx
+import { Select } from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Select
+      label="State"
+      placeholder="Select a state"
+      options={[
+        { value: "ca", label: "California" },
+        { value: "ny", label: "New York" },
+      ]}
+    />
+  );
+}
+```
+
+---
+
+### Skeleton
+
+Exports: `Skeleton`
+
+```tsx
+import { Skeleton } from "@rocketui/react";
+```
+
+#### Skeleton
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"rect" \| "circle" \| "text"` | `"rect"` | Shape preset. |
+| `width` | `number \| string` | `—` | Explicit width (number → px). |
+| `height` | `number \| string` | `—` | Explicit height (number → px). |
+| `animated` | `boolean` | `true` | Toggle the pulse animation. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Skeleton } from "@rocketui/react";
+
+export function Example() {
+  return <Skeleton variant="text" width={200} />;
+}
+```
+
+---
+
+### Slider
+
+Exports: `Slider`
+
+```tsx
+import { Slider } from "@rocketui/react";
+```
+
+#### Slider
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number \| number[]` | `—` | Value(s) (controlled). Array for a range. |
+| `defaultValue` | `number \| number[]` | `—` | Value(s) (uncontrolled). |
+| `onValueChange` | `(value: number \| number[]) => void` | `—` | Fired while dragging. |
+| `onValueCommit` | `(value: number \| number[]) => void` | `—` | Fired when interaction settles. |
+| `min` | `number` | `0` | Minimum value. |
+| `max` | `number` | `100` | Maximum value. |
+| `step` | `number` | `1` | Snap increment. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Track direction. |
+| `label` | `ReactNode` | `—` | Label above the track. |
+| `showValue` | `boolean \| (v) => ReactNode` | `false` | Show/format the current value(s). |
+| `minStepsBetweenThumbs` | `number` | `0` | Gap enforced between range thumbs. |
+| `disabled` | `boolean` | `false` | Disable the slider. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Slider } from "@rocketui/react";
+import { useState } from "react";
+
+export function Example() {
+  const [value, setValue] = useState(60);
+  return <Slider label="Storage" showValue value={value} onValueChange={setValue} />;
+}
+```
+
+---
+
+### Surface
+
+Exports: `Surface`
+
+```tsx
+import { Surface } from "@rocketui/react";
+```
+
+#### Surface
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"elevated" \| "outline" \| "filled" \| "ghost"` | `"elevated"` | Surface style. |
+| `radius` | `"none" \| "md" \| "lg" \| "xl" \| "full"` | `"xl"` | Corner rounding. |
+| `padding` | `"none" \| "sm" \| "md" \| "lg"` | `"lg"` | Inner padding. |
+| `interactive` | `boolean` | `false` | Add hover/focus affordances. |
+| `asChild` | `boolean` | `false` | Render styles onto the child element. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Surface } from "@rocketui/react";
+
+export function Example() {
+  return <Surface variant="elevated">Content</Surface>;
+}
+```
+
+---
+
+### Table
+
+Exports: `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`
+
+```tsx
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@rocketui/react";
+```
+
+#### Table
+
+Root wrapper — renders a rounded, scrollable surface around a <table>.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `containerProps` | `ComponentProps<'div'>` | `—` | Props for the scrollable wrapper element. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### TableRow
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `selected` | `boolean` | `false` | Highlight the row as selected. |
+| `interactive` | `boolean` | `false` | Add hover affordance and pointer cursor. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### TableHeader / TableBody / TableFooter / TableHead / TableCell / TableCaption
+
+Structural slots mapping to thead, tbody, tfoot, th, td and caption. Each forwards native attributes and className.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Role</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>Alex</TableCell>
+          <TableCell>Product Manager</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+---
+
+### Tabs
+
+Exports: `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@rocketui/react";
+```
+
+#### Tabs
+
+Root — owns the selected value and provides context.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Selected tab value (controlled). |
+| `defaultValue` | `string` | `—` | Initial value (uncontrolled). |
+| `onValueChange` | `(value: string) => void` | `—` | Fires when the selection changes. |
+| `size` | `"sm" \| "md"` | `"md"` | Scales the track and triggers. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### TabsList
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `fullWidth` | `boolean` | `false` | Stretch triggers to fill the width. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### TabsTrigger
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Value this trigger selects. Required. |
+| `disabled` | `boolean` | `false` | Disable and skip during keyboard nav. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+#### TabsContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `—` | Value that shows this panel. Required. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@rocketui/react";
+
+export function Example() {
+  return (
+    <Tabs defaultValue="account">
+      <TabsList>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">Account settings</TabsContent>
+      <TabsContent value="password">Password settings</TabsContent>
+    </Tabs>
+  );
+}
+```
+
+---
+
+### Toggle
+
+Exports: `Toggle`
+
+```tsx
+import { Toggle } from "@rocketui/react";
+```
+
+#### Toggle
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | `boolean` | `—` | On/off state (controlled). |
+| `defaultChecked` | `boolean` | `false` | Initial state (uncontrolled). |
+| `onCheckedChange` | `(checked: boolean) => void` | `—` | Fired with the next state on toggle. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Switch size. |
+| `label` | `ReactNode` | `—` | Inline label next to the switch. |
+| `description` | `ReactNode` | `—` | Helper text under the label. |
+| `labelPosition` | `"start" \| "end"` | `"end"` | Place the label before or after the switch. |
+| `disabled` | `boolean` | `false` | Disable the toggle. |
+| `className` | `string` | `—` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Toggle } from "@rocketui/react";
+
+export function Example() {
+  return <Toggle label="Do you ship internationally?" defaultChecked />;
+}
+```

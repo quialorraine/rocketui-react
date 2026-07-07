@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-ssr
+*.local
+.figma-refs
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
