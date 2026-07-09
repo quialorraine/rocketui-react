@@ -304,7 +304,7 @@ export function ContextMenuContent({
       onKeyDown={onKeyDown}
       style={{ left: pos.x, top: pos.y }}
       className={cn(
-        "fixed z-50 min-w-[12rem] origin-top-left rounded-3xl border bg-popover p-2 text-popover-foreground shadow-lg outline-none",
+        "fixed z-50 min-w-[12rem] origin-top-left rounded-3xl border bg-popover p-2 text-popover-foreground outline-none",
         "transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none",
         visible ? "scale-100 opacity-100" : "scale-95 opacity-0",
         className,

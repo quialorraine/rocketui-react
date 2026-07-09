@@ -53,7 +53,7 @@ function Thumbnail({ src, type, alt, size, className }: ThumbnailProps) {
       {type === "video" && (
         <span className="absolute inset-0 grid place-items-center bg-black/10">
           <span
-            className="grid place-items-center rounded-full bg-card/90 text-foreground shadow-sm"
+            className="grid place-items-center rounded-full bg-card/90 text-foreground"
             style={{ width: playSize, height: playSize }}
           >
             <Play weight="fill" style={{ width: playSize * 0.5, height: playSize * 0.5 }} />
@@ -84,7 +84,7 @@ function RemoveButton({
         onRemove();
       }}
       className={cn(
-        "absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-card/90 text-foreground shadow-sm backdrop-blur transition-colors",
+        "absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full border border-border bg-card/90 text-foreground backdrop-blur transition-colors",
         "hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "[&_svg]:size-3",
       )}

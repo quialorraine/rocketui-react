@@ -20,7 +20,7 @@ import { cn } from "@/lib/cn";
 /* -------------------------------------------------------------------------- */
 
 const alertVariants = cva(
-  "relative flex w-full border bg-card text-card-foreground shadow-sm",
+  "relative flex w-full border bg-card text-card-foreground",
   {
     variants: {
       size: {

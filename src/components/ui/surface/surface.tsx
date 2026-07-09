@@ -16,7 +16,7 @@ import { cn } from "@/lib/cn";
 const surfaceVariants = cva("text-card-foreground", {
   variants: {
     variant: {
-      elevated: "bg-card shadow-sm",
+      elevated: "border border-border bg-card",
       outline: "border border-border bg-transparent",
       filled: "bg-muted",
       ghost: "bg-transparent",
@@ -42,7 +42,7 @@ const surfaceVariants = cva("text-card-foreground", {
       className:
         "cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     },
-    { interactive: true, variant: "elevated", className: "hover:shadow-md" },
+    { interactive: true, variant: "elevated", className: "hover:border-foreground/20" },
     { interactive: true, variant: "outline", className: "hover:border-foreground/20" },
     { interactive: true, variant: "filled", className: "hover:bg-muted/70" },
     { interactive: true, variant: "ghost", className: "hover:bg-muted" },

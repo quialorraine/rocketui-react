@@ -150,7 +150,7 @@ DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
 
 const contentVariants = cva(
   [
-    "absolute z-50 min-w-[12rem] rounded-3xl border bg-popover p-2 text-popover-foreground shadow-lg outline-none",
+    "absolute z-50 min-w-[12rem] rounded-3xl border bg-popover p-2 text-popover-foreground outline-none",
     "transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none",
   ],
   {
@@ -648,7 +648,7 @@ export function DropdownMenuSubContent({
         }
       }}
       className={cn(
-        "absolute left-full top-0 z-50 ml-1 min-w-[11rem] rounded-3xl border bg-popover p-2 text-popover-foreground shadow-lg outline-none",
+        "absolute left-full top-0 z-50 ml-1 min-w-[11rem] rounded-3xl border bg-popover p-2 text-popover-foreground outline-none",
         "origin-top-left transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none",
         visible ? "scale-100 opacity-100" : "scale-95 opacity-0",
         className,

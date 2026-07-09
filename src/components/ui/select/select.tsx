@@ -38,7 +38,7 @@ export interface SelectOption {
 
 const trigger = cva(
   [
-    "flex w-full cursor-pointer items-center gap-2 rounded-xl border bg-card text-left text-card-foreground shadow-sm outline-none",
+    "flex w-full cursor-pointer items-center gap-2 rounded-xl border bg-card text-left text-card-foreground outline-none",
     "transition-[color,box-shadow,border-color]",
     "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:cursor-not-allowed disabled:opacity-50",
@@ -324,7 +324,7 @@ export function Select({
           id={listboxId}
           role="listbox"
           aria-labelledby={labelId ?? aria["aria-labelledby"]}
-          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-auto rounded-xl border bg-popover p-2 text-popover-foreground shadow-lg"
+          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-auto rounded-xl border bg-popover p-2 text-popover-foreground"
         >
           {options.length === 0 ? (
             <li className="px-3 py-6 text-center text-sm text-muted-foreground">

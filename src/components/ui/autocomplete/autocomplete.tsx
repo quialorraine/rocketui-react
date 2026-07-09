@@ -38,7 +38,7 @@ type AutocompleteValue = string | string[] | null;
 /* -------------------------------------------------------------------------- */
 
 const controlVariants = cva(
-  "flex w-full cursor-pointer items-start gap-1.5 rounded-xl border border-input bg-card text-card-foreground shadow-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
+  "flex w-full cursor-pointer items-start gap-1.5 rounded-xl border border-input bg-card text-card-foreground transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
   {
     variants: {
       size: {
@@ -380,7 +380,7 @@ export function Autocomplete({
           id={listboxId}
           role="listbox"
           aria-multiselectable={multiple || undefined}
-          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-auto rounded-xl border bg-popover p-2 text-popover-foreground shadow-lg"
+          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-auto rounded-xl border bg-popover p-2 text-popover-foreground"
         >
           {filtered.length === 0 ? (
             <li className="px-3 py-6 text-center text-sm text-muted-foreground">

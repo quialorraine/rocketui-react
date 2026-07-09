@@ -130,7 +130,7 @@ DialogTrigger.displayName = "DialogTrigger";
 /* -------------------------------------------------------------------------- */
 
 const dialogContentVariants = cva(
-  "pointer-events-auto relative w-full rounded-3xl border bg-card p-5 text-card-foreground shadow-2xl outline-none transition-all duration-200 ease-out motion-reduce:transition-none",
+  "pointer-events-auto relative w-full rounded-3xl border bg-card p-5 text-card-foreground outline-none transition-all duration-200 ease-out motion-reduce:transition-none",
   {
     variants: {
       size: {

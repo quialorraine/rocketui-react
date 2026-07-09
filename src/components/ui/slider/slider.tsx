@@ -265,7 +265,7 @@ export function Slider({
               aria-disabled={disabled || undefined}
               onKeyDown={onKeyDown(i)}
               className={cn(
-                "absolute rounded-full bg-white shadow-sm ring-1 ring-black/10 outline-none",
+                "absolute rounded-full bg-white ring-1 ring-black/10 outline-none",
                 "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 vertical ? "h-5 w-3" : "h-3 w-5",
               )}

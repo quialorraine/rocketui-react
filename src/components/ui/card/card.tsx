@@ -16,7 +16,7 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        elevated: "border bg-card shadow-sm",
+        elevated: "border bg-card",
         outline: "border bg-card",
         ghost: "bg-transparent",
       },
@@ -26,14 +26,14 @@ const cardVariants = cva(
         md: "p-5",
         lg: "p-6",
       },
-      interactive: { true: "transition-shadow", false: "" },
+      interactive: { true: "transition-colors", false: "" },
     },
     compoundVariants: [
       {
         interactive: true,
         variant: "elevated",
         className:
-          "cursor-pointer hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring",
+          "cursor-pointer hover:border-foreground/20 focus-visible:ring-2 focus-visible:ring-ring",
       },
       {
         interactive: true,

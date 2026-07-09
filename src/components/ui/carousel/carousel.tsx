@@ -216,7 +216,7 @@ export function Carousel({
                 aria-roledescription="slide"
                 className={cn(
                   "relative shrink-0 overflow-hidden rounded-xl transition-transform duration-500 ease-out",
-                  isActive && "z-10 shadow-lg",
+                  isActive && "z-10",
                 )}
                 style={{
                   width: size,
@@ -309,7 +309,7 @@ function CarouselArrow({
       onClick={onClick}
       className={cn(
         "absolute top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full",
-        "border border-border bg-card/80 text-foreground shadow-md backdrop-blur-sm transition-colors",
+        "border border-border bg-card/80 text-foreground backdrop-blur-sm transition-colors",
         "hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "disabled:pointer-events-none disabled:opacity-0",
         side === "left" ? "left-3" : "right-3",

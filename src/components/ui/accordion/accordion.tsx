@@ -64,7 +64,7 @@ function useAccordionItemContext(component: string): AccordionItemContextValue {
 const accordionVariants = cva("flex flex-col", {
   variants: {
     variant: {
-      surface: "rounded-2xl border bg-card text-card-foreground shadow-sm",
+      surface: "rounded-2xl border bg-card text-card-foreground",
       plain: "",
     },
     size: {

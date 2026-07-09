@@ -15,7 +15,7 @@ import { cn } from "@/lib/cn";
  * lifts the ring so it works regardless of which inner element is focused. */
 export const controlSurface = cva(
   [
-    "flex w-full rounded-xl border bg-card text-card-foreground shadow-sm outline-none",
+    "flex w-full rounded-xl border bg-card text-card-foreground outline-none",
     "transition-[color,box-shadow,border-color]",
     "focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-background",
     "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",

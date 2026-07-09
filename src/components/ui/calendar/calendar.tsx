@@ -259,7 +259,7 @@ export function Calendar({
   return (
     <div
       className={cn(
-        "inline-flex w-fit flex-col gap-3 rounded-3xl border bg-card p-5 text-card-foreground shadow-sm",
+        "inline-flex w-fit flex-col gap-3 rounded-3xl border bg-card p-5 text-card-foreground",
         className,
       )}
       {...props}

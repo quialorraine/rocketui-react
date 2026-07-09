@@ -99,7 +99,7 @@ export function Toggle({
       >
         <span
           className={cn(
-            "absolute left-0.5 top-1/2 -translate-y-1/2 rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-transform",
+            "absolute left-0.5 top-1/2 -translate-y-1/2 rounded-full bg-white ring-1 ring-black/5 transition-transform",
             s.thumb,
             isChecked ? s.on : "translate-x-0",
           )}

@@ -235,7 +235,7 @@ export function PopoverContent({
         aria-labelledby={triggerId}
         tabIndex={-1}
         className={cn(
-          "relative w-72 max-w-[calc(100vw-2rem)] rounded-3xl border bg-popover p-4 text-popover-foreground shadow-lg outline-none",
+          "relative w-72 max-w-[calc(100vw-2rem)] rounded-3xl border bg-popover p-4 text-popover-foreground outline-none",
           "transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none",
           ORIGIN[side],
           visible ? "scale-100 opacity-100" : "scale-95 opacity-0",

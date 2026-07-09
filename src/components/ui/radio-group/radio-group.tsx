@@ -238,7 +238,7 @@ export function RadioCard({
     <label
       htmlFor={inputId}
       className={cn(
-        "group relative flex items-center gap-3 rounded-3xl border bg-card p-4 text-card-foreground shadow-sm transition-colors",
+        "group relative flex items-center gap-3 rounded-3xl border bg-card p-4 text-card-foreground transition-colors",
         "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background",
         disabled
           ? "cursor-not-allowed opacity-60"

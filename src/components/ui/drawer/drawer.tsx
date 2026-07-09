@@ -134,7 +134,7 @@ DrawerTrigger.displayName = "DrawerTrigger";
 /* -------------------------------------------------------------------------- */
 
 const drawerContentVariants = cva(
-  "pointer-events-auto fixed flex flex-col bg-card text-card-foreground shadow-2xl outline-none transition-transform duration-300 ease-out motion-reduce:transition-none",
+  "pointer-events-auto fixed flex flex-col bg-card text-card-foreground outline-none transition-transform duration-300 ease-out motion-reduce:transition-none",
   {
     variants: {
       side: {

@@ -198,7 +198,7 @@ export function AreaChart({
             className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full"
             style={{ left: activePoint.x, top: activePoint.y - 12 }}
           >
-            <div className="whitespace-nowrap rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-md">
+            <div className="whitespace-nowrap rounded-lg border border-border bg-card px-3 py-2 text-xs">
               {tooltip({ index: active as number, value: data[active as number] })}
             </div>
           </div>

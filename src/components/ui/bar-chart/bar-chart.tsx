@@ -126,7 +126,7 @@ export function BarChart({
           <>
             <div
               ref={tipRef}
-              className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-md"
+              className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-lg border border-border bg-card px-3 py-2 text-xs"
               style={{ left: tipLeft, top: tipTop }}
             >
               {tooltip({ index: hover, value: data[hover] })}

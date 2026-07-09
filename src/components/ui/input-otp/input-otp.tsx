@@ -14,7 +14,7 @@ import { cn } from "@/lib/cn";
 
 const cellVariants = cva(
   [
-    "flex items-center justify-center rounded-xl border bg-card text-center font-medium text-foreground shadow-sm caret-primary outline-none",
+    "flex items-center justify-center rounded-xl border bg-card text-center font-medium text-foreground caret-primary outline-none",
     "transition-[color,box-shadow,border-color]",
     "focus:z-10 focus:ring-2",
     "disabled:cursor-not-allowed disabled:opacity-50",

@@ -159,12 +159,12 @@ export function TabsTrigger({
       disabled={disabled}
       onClick={() => setValue(value)}
       className={cn(
-        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-full font-medium whitespace-nowrap transition-colors",
+        "inline-flex flex-1 items-center justify-center gap-1.5 rounded-full border border-transparent font-medium whitespace-nowrap transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:pointer-events-none disabled:opacity-50",
         SIZE[size].trigger,
         selected
-          ? "bg-card text-foreground shadow-sm"
+          ? "border-border bg-card text-foreground"
           : "text-muted-foreground hover:text-foreground",
         className,
       )}
