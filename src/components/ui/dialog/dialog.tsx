@@ -4,19 +4,23 @@ import {
   isValidElement,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
-  useState,
   type ComponentPropsWithoutRef,
   type MouseEvent,
   type ReactElement,
   type ReactNode,
 } from "react";
-import { createPortal } from "react-dom";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "@phosphor-icons/react";
 import { cn } from "@/lib/cn";
+import { Portal } from "@/lib/portal";
+import { mergeProps } from "@/lib/merge-props";
+import { useControllableState } from "@/lib/use-controllable-state";
+import { useEnterExit } from "@/lib/use-enter-exit";
+import { useFocusTrap } from "@/lib/use-focus-trap";
+import { useDismiss } from "@/lib/use-dismiss";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Context                                    */
@@ -59,18 +63,12 @@ export function Dialog({
   onOpenChange,
   children,
 }: DialogProps) {
-  const isControlled = open !== undefined;
-  const [uncontrolled, setUncontrolled] = useState(defaultOpen);
-  const currentOpen = isControlled ? open : uncontrolled;
   const reactId = useId();
-
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolled(next);
-      onOpenChange?.(next);
-    },
-    [isControlled, onOpenChange],
-  );
+  const [currentOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   return (
     <DialogContext.Provider
@@ -109,28 +107,18 @@ export function DialogTrigger({
     if (!event.defaultPrevented) setOpen(true);
   };
 
+  const shared = { "aria-haspopup": "dialog" as const, "aria-expanded": open };
+
   if (asChild && isValidElement(children)) {
     const child = children as ReactElement<Record<string, unknown>>;
-    return cloneElement(child, {
-      "aria-haspopup": "dialog",
-      "aria-expanded": open,
-      onClick: (event: MouseEvent<HTMLElement>) => {
-        (child.props.onClick as ((e: MouseEvent<HTMLElement>) => void) | undefined)?.(
-          event,
-        );
-        handleClick(event);
-      },
-    });
+    return cloneElement(
+      child,
+      mergeProps(child.props, { ...shared, onClick: handleClick }),
+    );
   }
 
   return (
-    <button
-      type="button"
-      aria-haspopup="dialog"
-      aria-expanded={open}
-      onClick={handleClick}
-      {...props}
-    >
+    <button type="button" onClick={handleClick} {...shared} {...props}>
       {children}
     </button>
   );
@@ -154,9 +142,6 @@ const dialogContentVariants = cva(
     defaultVariants: { size: "md" },
   },
 );
-
-const FOCUSABLE =
-  'a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
 export interface DialogContentProps
   extends Omit<ComponentPropsWithoutRef<"div">, "role">,
@@ -185,113 +170,68 @@ export function DialogContent({
 }: DialogContentProps) {
   const { open, setOpen, titleId, descriptionId } = useDialogContext("DialogContent");
   const panelRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(open);
-  const [visible, setVisible] = useState(false);
+  const { mounted, visible } = useEnterExit(open, 200);
+  const close = useCallback(() => setOpen(false), [setOpen]);
 
-  // Mount/enter/exit lifecycle without keyframes.
-  useEffect(() => {
-    if (open) {
-      setMounted(true);
-      const frame = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setVisible(false);
-    const timer = window.setTimeout(() => setMounted(false), 200);
-    return () => window.clearTimeout(timer);
-  }, [open]);
-
-  // Focus management, focus trap, Escape, and scroll lock while open.
-  useEffect(() => {
-    if (!open) return;
-
-    const panel = panelRef.current;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-
-    const getFocusable = () =>
-      panel ? Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)) : [];
-
-    (getFocusable()[0] ?? panel)?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && closeOnEscape) {
-        event.stopPropagation();
-        setOpen(false);
-        return;
-      }
-      if (event.key !== "Tab") return;
-
-      const items = getFocusable();
-      if (items.length === 0) {
-        event.preventDefault();
-        return;
-      }
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-      previouslyFocused?.focus?.();
-    };
-  }, [open, closeOnEscape, setOpen]);
+  // A modal: lock background scroll, trap focus, and dismiss on Escape. Outside
+  // pointer presses are handled by the overlay element's click below.
+  useScrollLock(open);
+  // Gate the trap on `mounted` so focus moves in only once the panel is in the
+  // DOM (mounting is a separate state update from opening).
+  useFocusTrap(panelRef, { active: open && mounted, trap: true, restoreFocus: true });
+  useDismiss(panelRef, {
+    active: open,
+    onDismiss: close,
+    escape: closeOnEscape,
+    outsidePointer: false,
+  });
 
   if (!mounted) return null;
 
-  return createPortal(
-    <div className="fixed inset-0 z-50">
-      <div
-        aria-hidden="true"
-        onClick={() => closeOnOverlayClick && setOpen(false)}
-        className={cn(
-          "absolute inset-0 bg-black/50 transition-opacity duration-200 ease-out motion-reduce:transition-none",
-          visible ? "opacity-100" : "opacity-0",
-        )}
-      />
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-y-auto p-4">
+  return (
+    <Portal>
+      <div className="fixed inset-0 z-50">
         <div
-          ref={panelRef}
-          role={role}
-          aria-modal="true"
-          aria-labelledby={titleId}
-          aria-describedby={descriptionId}
-          tabIndex={-1}
+          aria-hidden="true"
+          onClick={() => closeOnOverlayClick && setOpen(false)}
           className={cn(
-            dialogContentVariants({ size }),
-            visible ? "scale-100 opacity-100" : "scale-95 opacity-0",
-            className,
+            "absolute inset-0 bg-black/50 transition-opacity duration-200 ease-out motion-reduce:transition-none",
+            visible ? "opacity-100" : "opacity-0",
           )}
-          {...props}
-        >
-          {children}
-          {!hideClose && (
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={closeLabel}
-              className={cn(
-                "absolute right-5 top-5 grid place-items-center rounded-md text-muted-foreground transition-colors hover:text-foreground",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
-              )}
-            >
-              <X className="size-[22px]" />
-            </button>
-          )}
+        />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-y-auto p-4">
+          <div
+            ref={panelRef}
+            role={role}
+            aria-modal="true"
+            aria-labelledby={titleId}
+            aria-describedby={descriptionId}
+            tabIndex={-1}
+            className={cn(
+              dialogContentVariants({ size }),
+              visible ? "scale-100 opacity-100" : "scale-95 opacity-0",
+              className,
+            )}
+            {...props}
+          >
+            {children}
+            {!hideClose && (
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label={closeLabel}
+                className={cn(
+                  "absolute right-5 top-5 grid place-items-center rounded-md text-muted-foreground transition-colors hover:text-foreground",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
+                )}
+              >
+                <X className="size-[22px]" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>,
-    document.body,
+    </Portal>
   );
 }
 DialogContent.displayName = "DialogContent";
@@ -408,14 +348,7 @@ export function DialogClose({
 
   if (asChild && isValidElement(children)) {
     const child = children as ReactElement<Record<string, unknown>>;
-    return cloneElement(child, {
-      onClick: (event: MouseEvent<HTMLElement>) => {
-        (child.props.onClick as ((e: MouseEvent<HTMLElement>) => void) | undefined)?.(
-          event,
-        );
-        handleClick(event);
-      },
-    });
+    return cloneElement(child, mergeProps(child.props, { onClick: handleClick }));
   }
 
   return (

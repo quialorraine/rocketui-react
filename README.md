@@ -17,11 +17,32 @@ styled with Tailwind CSS v4 and driven entirely by semantic design tokens.
 npm install @rocketui-react/core
 ```
 
-Import the stylesheet once at the root of your app:
+## Two ways to use
+
+**Mode A — zero-config (recommended for most apps & AI).** Import the precompiled
+stylesheet once at the root of your app and you're done — no Tailwind setup
+needed. You get every component style, the design tokens, and a curated safelist
+of layout utilities (`grid-cols-*`, `flex`, `gap-*`, `p-*`, `text-*`, … incl.
+`sm:`/`md:`/`lg:` variants):
 
 ```tsx
 import "@rocketui-react/core/styles.css";
 ```
+
+**Mode B — Tailwind project (full power).** If your app already uses Tailwind
+CSS v4, or you need arbitrary values like `grid-cols-[220px_1fr]`, skip
+`styles.css`. Instead import the tokens into your own Tailwind entry and let
+Tailwind scan the package:
+
+```css
+@import "tailwindcss";
+@import "@rocketui-react/core/theme.css";
+@source "../node_modules/@rocketui-react/core/dist";
+```
+
+The full Tailwind utility set (including arbitrary values) now works, the
+semantic token colours resolve automatically, and only the classes you actually
+use are generated.
 
 ## Usage
 

@@ -2,12 +2,9 @@ import {
   cloneElement,
   createContext,
   isValidElement,
-  useCallback,
   useContext,
-  useEffect,
   useId,
   useRef,
-  useState,
   type ComponentPropsWithoutRef,
   type CSSProperties,
   type MouseEvent,
@@ -15,6 +12,11 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "@/lib/cn";
+import { mergeProps } from "@/lib/merge-props";
+import { useControllableState } from "@/lib/use-controllable-state";
+import { useEnterExit } from "@/lib/use-enter-exit";
+import { useFocusTrap } from "@/lib/use-focus-trap";
+import { useDismiss } from "@/lib/use-dismiss";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Context                                    */
@@ -55,19 +57,13 @@ export function Popover({
   onOpenChange,
   children,
 }: PopoverProps) {
-  const isControlled = open !== undefined;
-  const [uncontrolled, setUncontrolled] = useState(defaultOpen);
-  const currentOpen = isControlled ? open : uncontrolled;
   const reactId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
-
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (!isControlled) setUncontrolled(next);
-      onOpenChange?.(next);
-    },
-    [isControlled, onOpenChange],
-  );
+  const [currentOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   return (
     <PopoverContext.Provider
@@ -118,15 +114,10 @@ export function PopoverTrigger({
 
   if (asChild && isValidElement(children)) {
     const child = children as ReactElement<Record<string, unknown>>;
-    return cloneElement(child, {
-      ...shared,
-      onClick: (event: MouseEvent<HTMLElement>) => {
-        (child.props.onClick as ((e: MouseEvent<HTMLElement>) => void) | undefined)?.(
-          event,
-        );
-        handleClick(event);
-      },
-    });
+    return cloneElement(
+      child,
+      mergeProps(child.props, { ...shared, onClick: handleClick }),
+    );
   }
 
   return (
@@ -179,9 +170,6 @@ const ARROW_ALIGN: Record<PopoverSide, Record<PopoverAlign, string>> = {
   right: { start: "top-5", center: "top-1/2 -translate-y-1/2", end: "bottom-5" },
 };
 
-const FOCUSABLE =
-  'a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
-
 export interface PopoverContentProps extends ComponentPropsWithoutRef<"div"> {
   /** Side of the trigger to render on. */
   side?: PopoverSide;
@@ -210,57 +198,19 @@ export function PopoverContent({
   const { open, setOpen, triggerId, contentId, rootRef } =
     usePopoverContext("PopoverContent");
   const contentRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(open);
-  const [visible, setVisible] = useState(false);
+  const { mounted, visible } = useEnterExit(open, 150);
 
-  const focusTrigger = useCallback(
-    () => document.getElementById(triggerId)?.focus(),
-    [triggerId],
-  );
-
-  // Mount/enter/exit lifecycle.
-  useEffect(() => {
-    if (open) {
-      setMounted(true);
-      const frame = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(frame);
-    }
-    setVisible(false);
-    const timer = window.setTimeout(() => setMounted(false), 150);
-    return () => window.clearTimeout(timer);
-  }, [open]);
-
-  // Move focus into the panel when it opens.
-  useEffect(() => {
-    if (!open) return;
-    const frame = requestAnimationFrame(() => {
-      const panel = contentRef.current;
-      (panel?.querySelector<HTMLElement>(FOCUSABLE) ?? panel)?.focus();
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [open]);
-
-  // Close on outside pointer + Escape.
-  useEffect(() => {
-    if (!open) return;
-    const onPointerDown = (event: PointerEvent) => {
-      if (!closeOnInteractOutside) return;
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape" && closeOnEscape) {
-        event.stopPropagation();
-        setOpen(false);
-        focusTrigger();
-      }
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open, closeOnEscape, closeOnInteractOutside, setOpen, focusTrigger, rootRef]);
+  // Non-modal: move focus into the panel and restore it on close, but do not
+  // trap Tab. Dismiss on Escape / outside pointer, treating trigger + panel as
+  // inside via the shared root.
+  // Gate on `mounted` so focus moves in only once the panel is in the DOM.
+  useFocusTrap(contentRef, { active: open && mounted, trap: false, restoreFocus: true });
+  useDismiss(rootRef, {
+    active: open,
+    onDismiss: () => setOpen(false),
+    escape: closeOnEscape,
+    outsidePointer: closeOnInteractOutside,
+  });
 
   if (!mounted) return null;
 
@@ -357,14 +307,7 @@ export function PopoverClose({
 
   if (asChild && isValidElement(children)) {
     const child = children as ReactElement<Record<string, unknown>>;
-    return cloneElement(child, {
-      onClick: (event: MouseEvent<HTMLElement>) => {
-        (child.props.onClick as ((e: MouseEvent<HTMLElement>) => void) | undefined)?.(
-          event,
-        );
-        handleClick(event);
-      },
-    });
+    return cloneElement(child, mergeProps(child.props, { onClick: handleClick }));
   }
 
   return (

@@ -1,0 +1,48 @@
+/*
+ * Docs-site only styles (Shiki syntax highlighting for code blocks).
+ * Imported by the demo app entry, never shipped in the published package.
+ */
+
+:root {
+  --code-bg: #f6f8fa;
+}
+.dark {
+  --code-bg: #0d1117;
+}
+
+/* Shiki dual-theme syntax highlighting (light by default, dark via `.dark`). */
+.code-block {
+  --code-bg: var(--code-bg);
+}
+.code-block .shiki,
+.code-block .shiki span {
+  color: var(--shiki-light);
+  background-color: transparent !important;
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  font-variant-ligatures: none;
+}
+.dark .code-block .shiki,
+.dark .code-block .shiki span {
+  color: var(--shiki-dark);
+}
+.code-block pre {
+  margin: 0;
+}
+
+/* Line-number gutter (matches the Figma "1." code boxes). */
+.code-numbered .shiki code {
+  counter-reset: step;
+}
+.code-numbered .shiki .line {
+  counter-increment: step;
+}
+.code-numbered .shiki .line::before {
+  content: counter(step) ".";
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1.75rem;
+  color: color-mix(in oklab, var(--color-muted-foreground) 70%, transparent);
+  text-align: left;
+}

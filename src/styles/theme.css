@@ -1,0 +1,239 @@
+/*
+ * RocketUI design tokens + base layer.
+ *
+ * This file is the shared core of the design system. It is:
+ *   - compiled into the zero-config `styles.css` (via globals.css), and
+ *   - shipped as-is so Tailwind projects can `@import "@rocketui-react/core/theme.css"`
+ *     to pull the tokens into their own build (see README, "Two ways to use").
+ *
+ * It deliberately does NOT `@import "tailwindcss"` — the consuming stylesheet
+ * (or globals.css) is responsible for that.
+ */
+
+/* Dark mode is driven by a `.dark` class on a parent (usually <html>). */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design tokens (source of truth).
+ * Values are extracted from the RocketUI design system in Figma.
+ * Components must only ever consume the semantic tokens below,
+ * never raw color/size literals.
+ */
+:root {
+  /* Surfaces */
+  --background: #f4f4f5;
+  --foreground: #18181b;
+
+  --card: #ffffff;
+  --card-foreground: #18181b;
+
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+
+  /* Brand / actions */
+  --primary: #3873ff;
+  --primary-foreground: #ffffff;
+
+  --secondary: #eeecec;
+  --secondary-foreground: #18181b;
+
+  --muted: #f4f4f5;
+  --muted-foreground: #71717b;
+
+  --accent: #e4e2e2;
+  --accent-foreground: #18181b;
+
+  --destructive: #da2626;
+  --destructive-foreground: #ffffff;
+
+  --success: #22a06b;
+  --success-foreground: #ffffff;
+
+  --warning: #f5a524;
+  --warning-foreground: #18181b;
+
+  --info: #2968ff;
+  --info-foreground: #ffffff;
+
+  /* Lines & focus */
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #18181b;
+
+  /* Radius scale (base drives the rest) */
+  --radius: 0.875rem; /* 14px */
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+
+  /* Elevation */
+  --shadow-color: 240 5% 41%;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+
+  --card: #131316;
+  --card-foreground: #fafafa;
+
+  --popover: #131316;
+  --popover-foreground: #fafafa;
+
+  --primary: #4c82ff;
+  --primary-foreground: #ffffff;
+
+  --secondary: #26262b;
+  --secondary-foreground: #fafafa;
+
+  --muted: #1c1c20;
+  --muted-foreground: #a1a1aa;
+
+  --accent: #26262b;
+  --accent-foreground: #fafafa;
+
+  --destructive: #ef5b5f;
+  --destructive-foreground: #ffffff;
+
+  --success: #30c088;
+  --success-foreground: #04170d;
+
+  --warning: #f5a524;
+  --warning-foreground: #18181b;
+
+  --info: #4c82ff;
+  --info-foreground: #ffffff;
+
+  --border: #26262b;
+  --input: #33333a;
+  --ring: #d4d4d8;
+
+  --shadow-color: 0 0% 0%;
+}
+
+/* Map tokens onto Tailwind's theme so utilities like `bg-card`,
+ * `text-muted-foreground`, `rounded-lg`, `ring-ring` resolve to tokens. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-sans);
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: calc(var(--radius) - 2px);
+  --radius-xl: var(--radius);
+  --radius-2xl: calc(var(--radius) + 6px);
+  --radius-3xl: calc(var(--radius) + 14px);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  /* Consistent, token-driven focus ring for keyboard users. */
+  :where(button, a, input, textarea, select, [tabindex]):focus-visible {
+    outline: none;
+  }
+
+  /* Tailwind v4 no longer sets a pointer cursor on buttons; restore it for
+   * every interactive control across the library. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  label[for] {
+    cursor: pointer;
+  }
+
+  :disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                         Custom (non-native) scrollbars                      */
+/* -------------------------------------------------------------------------- */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-muted-foreground) 35%, transparent)
+    transparent;
+}
+
+/* WebKit / Chromium / Safari */
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklab, var(--color-muted-foreground) 32%, transparent);
+  border-radius: 9999px;
+  /* Inset the thumb so it reads as a thin pill with breathing room. */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in oklab, var(--color-muted-foreground) 55%, transparent);
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Opt-out helper for elements that manage their own overflow visuals. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

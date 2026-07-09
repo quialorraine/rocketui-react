@@ -164,11 +164,32 @@ out of the box (including \`sm:\`/\`md:\`/\`lg:\` variants for the layout ones):
 Rules:
 - Stick to these standard utilities. **Arbitrary values** like
   \`grid-cols-[220px_1fr]\`, \`w-[240px]\`, \`text-[13px]\`, \`p-[18px]\` are NOT in the
-  precompiled CSS and will silently do nothing unless the project has its own
-  Tailwind setup.
-- If you need arbitrary values or utilities beyond this list, install Tailwind
-  CSS v4 in the project so it can generate them; the token colours resolve
-  automatically because they are exposed as CSS variables.
+  precompiled CSS and will silently do nothing in zero-config mode.
+
+### Two ways to use
+
+**Mode A — zero-config (default).** Import the precompiled stylesheet once and
+you are done. Best for quick prototypes and AI-generated screens:
+
+\`\`\`ts
+import "${PKG}/styles.css";
+\`\`\`
+
+You get every component style, the design tokens, and the layout safelist above.
+
+**Mode B — Tailwind project (full power).** If the app already uses Tailwind
+CSS v4 (or you need arbitrary values), do NOT import \`styles.css\`. Instead pull
+the tokens into your own Tailwind entry and let Tailwind scan the package:
+
+\`\`\`css
+@import "tailwindcss";
+@import "${PKG}/theme.css";
+@source "../node_modules/${PKG}/dist";
+\`\`\`
+
+Now the full Tailwind utility set (including arbitrary values) works, the
+semantic token colours resolve, and only the classes you actually use are
+generated.
 
 ## Available components
 
