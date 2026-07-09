@@ -58,6 +58,10 @@ export const GUIDE: Record<string, ComponentGuide> = {
     summary: "Container surface that groups related content with padding, border, and optional media.",
     keywords: ["container", "panel", "box", "tile"],
   },
+  carousel: {
+    summary: "Center-focused slider with peeking neighbours, arrows, and dot indicators.",
+    keywords: ["carousel", "slider", "gallery", "slideshow", "swipe", "coverflow"],
+  },
   checkbox: {
     summary: "Toggle one boolean option, with support for an indeterminate state.",
     keywords: ["check", "boolean", "multi select", "agree", "opt in"],
@@ -182,6 +186,22 @@ export const GUIDE: Record<string, ComponentGuide> = {
     summary: "Modal overlay for a focused task or a confirmation.",
     keywords: ["modal", "dialog", "popup", "confirm", "overlay"],
   },
+  drawer: {
+    summary: "Panel that slides in from a screen edge for navigation, filters, details, or settings.",
+    keywords: ["drawer", "sheet", "side panel", "slide over", "off-canvas", "flyout"],
+  },
+  "context-menu": {
+    summary: "Menu that opens at the pointer on right-click, reusing the dropdown menu items.",
+    keywords: ["context menu", "right click", "rmb", "menu", "actions"],
+  },
+  sidebar: {
+    summary: "Vertical app navigation with a brand header, active items, collapsible groups, and a pinned footer.",
+    keywords: ["sidebar", "navigation", "nav", "menu", "app shell", "side nav"],
+  },
+  "stat-card": {
+    summary: "Compact KPI tile with a label, headline value, trend chip, and caption.",
+    keywords: ["stat", "kpi", "metric", "dashboard", "summary", "trend"],
+  },
 };
 
 /**
@@ -215,8 +235,13 @@ export const PICKER: PickerRow[] = [
   { need: "User picture or initials", use: "Avatar" },
   { need: "Structured data in rows and columns", use: "Table" },
   { need: "Menu of actions from a button", use: "DropdownMenu" },
+  { need: "Menu of actions on right-click", use: "ContextMenu" },
+  { need: "App navigation down the side of a layout", use: "Sidebar", avoid: "rebuilding nav rows from Button" },
+  { need: "A single KPI or metric tile", use: "StatCard", avoid: "hand-building a Card with a Chip" },
+  { need: "Cycle through images or cards one at a time", use: "Carousel" },
   { need: "Floating panel next to a trigger", use: "Popover" },
   { need: "Focused task or confirmation", use: "Dialog" },
+  { need: "Slide-in panel from a screen edge", use: "Drawer", avoid: "a full Dialog for side navigation or filters" },
   { need: "Switch between related views", use: "Tabs" },
   { need: "Expandable sections", use: "Accordion" },
   { need: "Inline status message", use: "Alert" },
@@ -377,6 +402,53 @@ export function Example() {
       {
         title: "CardHeader / CardTitle / CardDescription / CardContent / CardFooter / CardMedia",
         description: "Structural slots. Each accepts native attributes and className.",
+        props: [className],
+      },
+    ],
+  },
+
+  carousel: {
+    imports: ["Carousel", "CarouselItem"],
+    sourceFile: "carousel/carousel.tsx",
+    usage: `import { Carousel, CarouselItem } from "${PKG}";
+
+export function Example() {
+  return (
+    <Carousel slideWidth={300} defaultIndex={1}>
+      <CarouselItem>
+        <img src="/photo-1.jpg" alt="" className="size-full object-cover" />
+      </CarouselItem>
+      <CarouselItem>
+        <img src="/photo-2.jpg" alt="" className="size-full object-cover" />
+      </CarouselItem>
+      <CarouselItem>
+        <img src="/photo-3.jpg" alt="" className="size-full object-cover" />
+      </CarouselItem>
+    </Carousel>
+  );
+}`,
+    api: [
+      {
+        title: "Carousel",
+        props: [
+          { name: "index", type: "number", description: "Active slide index (controlled)." },
+          { name: "defaultIndex", type: "number", default: "0", description: "Initial active slide index (uncontrolled)." },
+          { name: "onIndexChange", type: "(index: number) => void", description: "Fired with the new active index." },
+          { name: "slideWidth", type: "number", default: "311", description: "Width of the active (square) slide in pixels; shrinks to fit narrow viewports." },
+          { name: "gap", type: "number", default: "24", description: "Gap between slides in pixels." },
+          { name: "peekScale", type: "number", default: "0.7", description: "Scale applied to the non-active side slides." },
+          { name: "fadeColor", type: "string", default: '"var(--color-background)"', description: "Colour the side slides fade into at their outer edge; set it to match the surface behind the carousel." },
+          { name: "loop", type: "boolean", default: "false", description: "Wrap from the last slide back to the first." },
+          { name: "showArrows", type: "boolean", default: "true", description: "Show the previous/next arrow buttons." },
+          { name: "showDots", type: "boolean", default: "true", description: "Show the dot indicators." },
+          { name: "autoPlay", type: "boolean", default: "false", description: "Advance automatically; pauses on hover and while dragging." },
+          { name: "autoPlayInterval", type: "number", default: "4000", description: "Autoplay interval in milliseconds." },
+          className,
+        ],
+      },
+      {
+        title: "CarouselItem",
+        description: "A single slide. Fills its square slot — give it an image or card as the child.",
         props: [className],
       },
     ],
@@ -738,6 +810,111 @@ export function Example() {
     ],
   },
 
+  sidebar: {
+    imports: [
+      "Sidebar",
+      "SidebarHeader",
+      "SidebarSection",
+      "SidebarItem",
+      "SidebarGroup",
+      "SidebarSubItem",
+      "SidebarSeparator",
+      "SidebarFooter",
+    ],
+    sourceFile: "sidebar/sidebar.tsx",
+    usage: `import {
+  Sidebar,
+  SidebarHeader,
+  SidebarSection,
+  SidebarItem,
+  SidebarGroup,
+  SidebarSubItem,
+  SidebarSeparator,
+  SidebarFooter,
+} from "${PKG}";
+import { Compass, CurrencyCircleDollar, Gear, Package } from "@phosphor-icons/react";
+
+export function Example() {
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <img src="/logo.svg" alt="RocketUI" className="size-9" />
+        <span className="text-lg font-semibold">RocketUI</span>
+      </SidebarHeader>
+
+      <SidebarSection className="mt-3">
+        <SidebarItem icon={<Compass />} active>Dashboard</SidebarItem>
+        <SidebarItem icon={<Package />}>Products</SidebarItem>
+      </SidebarSection>
+
+      <SidebarSeparator />
+
+      <SidebarGroup icon={<CurrencyCircleDollar />} label="Finances" defaultOpen>
+        <SidebarSubItem>Invoices</SidebarSubItem>
+        <SidebarSubItem>Transactions</SidebarSubItem>
+      </SidebarGroup>
+
+      <SidebarFooter>
+        <SidebarItem icon={<Gear />}>Settings</SidebarItem>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}`,
+    api: [
+      {
+        title: "Sidebar",
+        description: "The shell and selection owner. Renders a <nav>; give items a value and they become active on click. Set a height (e.g. h-screen) to pin the footer.",
+        props: [
+          { name: "value", type: "string", description: "Value of the selected item (controlled)." },
+          { name: "defaultValue", type: "string", description: "Value of the initially selected item (uncontrolled)." },
+          { name: "onValueChange", type: "(value: string) => void", description: "Fired with the value of the item that was selected." },
+          { name: "className", type: "string", description: "Extra classes merged onto the root element (e.g. width or height)." },
+        ],
+      },
+      {
+        title: "SidebarItem",
+        description: "A primary navigation row. Renders a <button>, or the child element via asChild.",
+        props: [
+          { name: "icon", type: "ReactNode", description: "Leading icon element." },
+          { name: "value", type: "string", description: "Selection id. Selected on click and matched against the Sidebar value to set the active state." },
+          { name: "active", type: "boolean", description: "Force the active state, overriding value-based selection." },
+          { name: "trailing", type: "ReactNode", description: "Trailing content, e.g. a badge or count." },
+          { name: "asChild", type: "boolean", default: "false", description: "Render styles onto the child (e.g. an <a> or router link)." },
+          { name: "onClick", type: "(e) => void", description: "Fired on press, after selection." },
+          { name: "disabled", type: "boolean", default: "false", description: "Disable the item." },
+          className,
+        ],
+      },
+      {
+        title: "SidebarGroup",
+        description: "A labelled group that expands and collapses a tree of sub-items.",
+        props: [
+          { name: "label", type: "ReactNode", description: "Group label shown on the trigger. Required." },
+          { name: "icon", type: "ReactNode", description: "Leading icon for the trigger." },
+          { name: "open", type: "boolean", description: "Open state (controlled)." },
+          { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state (uncontrolled)." },
+          { name: "onOpenChange", type: "(open: boolean) => void", description: "Fired when the open state changes." },
+          className,
+        ],
+      },
+      {
+        title: "SidebarSubItem",
+        description: "A nested link inside a SidebarGroup, drawn with a tree connector.",
+        props: [
+          { name: "value", type: "string", description: "Selection id. Selected on click and matched against the Sidebar value." },
+          { name: "active", type: "boolean", description: "Force the active state, overriding value-based selection." },
+          { name: "asChild", type: "boolean", default: "false", description: "Render styles onto the child element." },
+          className,
+        ],
+      },
+      {
+        title: "SidebarHeader / SidebarSection / SidebarFooter / SidebarSeparator",
+        description: "Structural slots. Header holds the brand, Section groups items, Footer pins to the bottom, Separator draws a divider.",
+        props: [className],
+      },
+    ],
+  },
+
   skeleton: {
     imports: ["Skeleton"],
     sourceFile: "skeleton/skeleton.tsx",
@@ -787,6 +964,47 @@ export function Example() {
           { name: "minStepsBetweenThumbs", type: "number", default: "0", description: "Gap enforced between range thumbs." },
           { name: "disabled", type: "boolean", default: "false", description: "Disable the slider." },
           className,
+        ],
+      },
+    ],
+  },
+
+  "stat-card": {
+    imports: ["StatCard"],
+    sourceFile: "stat-card/stat-card.tsx",
+    usage: `import { StatCard } from "${PKG}";
+import { ShoppingCart } from "@phosphor-icons/react";
+
+export function Example() {
+  return (
+    <StatCard
+      label="Revenue"
+      value="$48,120"
+      icon={<ShoppingCart weight="fill" />}
+      trend={{ value: "12.4%", direction: "up" }}
+      description="vs. last 30 days"
+    />
+  );
+}`,
+    api: [
+      {
+        title: "StatCard",
+        props: [
+          { name: "label", type: "ReactNode", description: "Metric name shown at the top. Required." },
+          { name: "value", type: "ReactNode", description: "The headline value, e.g. a number or currency. Required." },
+          { name: "icon", type: "ReactNode", description: "Leading icon shown top-right." },
+          { name: "description", type: "ReactNode", description: "Supporting caption under the value." },
+          { name: "trend", type: "StatCardTrend", description: "Trend chip beside the value." },
+          className,
+        ],
+      },
+      {
+        title: "StatCardTrend",
+        description: "The shape of the trend prop.",
+        props: [
+          { name: "value", type: "ReactNode", description: "The delta label, e.g. \"10.5%\". Required." },
+          { name: "direction", type: '"up" | "down"', default: '"up"', description: "Arrow direction." },
+          { name: "color", type: '"neutral" | "primary" | "success" | "warning" | "destructive" | "info"', description: "Chip colour. Defaults to success for up and destructive for down." },
         ],
       },
     ],
@@ -1054,6 +1272,81 @@ export function Example() {
           { name: "description", type: "ReactNode", description: "Secondary line beneath the label." },
           { name: "destructive", type: "boolean", default: "false", description: "Style as a dangerous action." },
           { name: "closeOnSelect", type: "boolean", default: "true", description: "Close the menu after selecting." },
+          { name: "disabled", type: "boolean", default: "false", description: "Disable the item." },
+        ],
+      },
+    ],
+  },
+
+  "context-menu": {
+    imports: [
+      "ContextMenu",
+      "ContextMenuTrigger",
+      "ContextMenuContent",
+      "ContextMenuItem",
+    ],
+    sourceFile: "context-menu/context-menu.tsx",
+    usage: `import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+} from "${PKG}";
+import { Copy, Scissors, Trash } from "@phosphor-icons/react";
+
+export function Example() {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div className="grid h-40 place-items-center rounded-2xl border border-dashed">
+          Right-click here
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem icon={<Copy />} shortcut="⌘C">Copy</ContextMenuItem>
+        <ContextMenuItem icon={<Scissors />} shortcut="⌘X">Cut</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem icon={<Trash />} destructive>Delete</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}`,
+    api: [
+      {
+        title: "ContextMenu",
+        description: "Root that owns the open state and the pointer position.",
+        props: [
+          { name: "open", type: "boolean", description: "Open state (controlled)." },
+          { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state." },
+          { name: "onOpenChange", type: "(open: boolean) => void", description: "Fired when open state changes." },
+        ],
+      },
+      {
+        title: "ContextMenuTrigger",
+        description: "The region that opens the menu on right-click. Renders a <div>, or the child via asChild.",
+        props: [
+          { name: "asChild", type: "boolean", default: "false", description: "Merge the trigger behaviour onto the child element." },
+          { name: "disabled", type: "boolean", default: "false", description: "Disable opening the menu." },
+          className,
+        ],
+      },
+      {
+        title: "ContextMenuContent",
+        description: "The menu surface, positioned at the pointer and clamped to the viewport.",
+        props: [
+          { name: "closeOnEscape", type: "boolean", default: "true", description: "Close when Escape is pressed." },
+          className,
+        ],
+      },
+      {
+        title: "ContextMenuItem",
+        description: "Same as DropdownMenuItem. ContextMenuLabel, ContextMenuSeparator, ContextMenuGroup and ContextMenuSub* are also re-exported.",
+        props: [
+          { name: "onSelect", type: "() => void", description: "Fired on click / Enter / Space." },
+          { name: "icon", type: "ReactNode", description: "Leading icon." },
+          { name: "shortcut", type: "ReactNode", description: "Trailing keyboard shortcut hint." },
+          { name: "destructive", type: "boolean", default: "false", description: "Style as a dangerous action." },
           { name: "disabled", type: "boolean", default: "false", description: "Disable the item." },
         ],
       },
@@ -1437,6 +1730,87 @@ export function Example() {
           { name: "icon", type: "ReactNode", description: "Leading feature icon." },
           { name: "align", type: '"row" | "column"', default: '"row"', description: "Icon beside or above the title." },
         ],
+      },
+    ],
+  },
+  drawer: {
+    imports: [
+      "Drawer",
+      "DrawerTrigger",
+      "DrawerContent",
+      "DrawerHeader",
+      "DrawerTitle",
+      "DrawerDescription",
+      "DrawerBody",
+      "DrawerFooter",
+      "DrawerClose",
+    ],
+    sourceFile: "drawer/drawer.tsx",
+    usage: `import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  Button,
+} from "${PKG}";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button>Open drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent side="right">
+        <DrawerHeader>
+          <DrawerTitle>Settings</DrawerTitle>
+        </DrawerHeader>
+        <DrawerBody>Panel content</DrawerBody>
+        <DrawerFooter>
+          <DrawerClose asChild>
+            <Button>Done</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}`,
+    api: [
+      {
+        title: "Drawer",
+        description: "Root that owns the open state.",
+        props: [
+          { name: "open", type: "boolean", description: "Open state (controlled)." },
+          { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state." },
+          { name: "onOpenChange", type: "(open: boolean) => void", description: "Fired when open state changes." },
+        ],
+      },
+      {
+        title: "DrawerTrigger",
+        description: "Opens the drawer. Renders a <button>, or the child via asChild.",
+        props: [
+          { name: "asChild", type: "boolean", default: "false", description: "Merge the trigger behaviour onto the child element." },
+        ],
+      },
+      {
+        title: "DrawerContent",
+        description: "The sliding panel. Wrap DrawerHeader, DrawerBody and DrawerFooter inside it.",
+        props: [
+          { name: "side", type: '"right" | "left" | "top" | "bottom"', default: '"right"', description: "Edge the panel slides in from." },
+          { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Panel width (left/right) or height (top/bottom)." },
+          { name: "hideClose", type: "boolean", default: "false", description: "Hide the built-in top-right close button." },
+          { name: "closeOnOverlayClick", type: "boolean", default: "true", description: "Close when the overlay is clicked." },
+          { name: "closeOnEscape", type: "boolean", default: "true", description: "Close when Escape is pressed." },
+          className,
+        ],
+      },
+      {
+        title: "DrawerHeader / DrawerBody / DrawerFooter",
+        description: "Layout slots. DrawerBody scrolls; header and footer stay pinned. DrawerTitle, DrawerDescription and DrawerClose are also exported.",
+        props: [className],
       },
     ],
   },

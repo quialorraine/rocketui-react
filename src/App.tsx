@@ -8,7 +8,12 @@ import { AnnouncementShowcase } from "@/demo/announcement-showcase";
 import { AreaChartShowcase } from "@/demo/area-chart-showcase";
 import { AttachmentShowcase } from "@/demo/attachment-showcase";
 import { BarChartShowcase } from "@/demo/bar-chart-showcase";
-import { CreditUsageBlock, UsageWidgetBlock } from "@/demo/blocks-showcase";
+import {
+  BillingStatusBlock,
+  CreditUsageBlock,
+  SidebarNavBlock,
+  UsageWidgetBlock,
+} from "@/demo/blocks-showcase";
 import { AutocompleteShowcase } from "@/demo/autocomplete-showcase";
 import { AvatarShowcase } from "@/demo/avatar-showcase";
 import { BadgeShowcase } from "@/demo/badge-showcase";
@@ -17,8 +22,11 @@ import { ButtonGroupShowcase } from "@/demo/button-group-showcase";
 import { ButtonShowcase } from "@/demo/button-showcase";
 import { CalendarShowcase } from "@/demo/calendar-showcase";
 import { CardShowcase } from "@/demo/card-showcase";
+import { CarouselShowcase } from "@/demo/carousel-showcase";
 import { CheckboxShowcase } from "@/demo/checkbox-showcase";
 import { ChipShowcase } from "@/demo/chip-showcase";
+import { ContextMenuShowcase } from "@/demo/context-menu-showcase";
+import { DrawerShowcase } from "@/demo/drawer-showcase";
 import { DropdownMenuShowcase } from "@/demo/dropdown-menu-showcase";
 import { FormShowcase } from "@/demo/form-showcase";
 import { InputOTPShowcase } from "@/demo/input-otp-showcase";
@@ -32,7 +40,9 @@ import { RadioGroupShowcase } from "@/demo/radio-group-showcase";
 import { ScrollShadowShowcase } from "@/demo/scroll-shadow-showcase";
 import { SearchFieldShowcase } from "@/demo/search-field-showcase";
 import { SelectShowcase } from "@/demo/select-showcase";
+import { SidebarShowcase } from "@/demo/sidebar-showcase";
 import { SkeletonShowcase } from "@/demo/skeleton-showcase";
+import { StatCardShowcase } from "@/demo/stat-card-showcase";
 import { SliderShowcase } from "@/demo/slider-showcase";
 import { SurfaceShowcase } from "@/demo/surface-showcase";
 import { TableShowcase } from "@/demo/table-showcase";
@@ -62,6 +72,8 @@ const PAGES: ComponentEntry[] = [
 ];
 
 const BLOCKS: ComponentEntry[] = [
+  { id: "sidebar-nav", label: "Sidebar Navigation", Showcase: SidebarNavBlock },
+  { id: "billing-status", label: "Billing Status", Showcase: BillingStatusBlock },
   { id: "usage-widget", label: "Usage Widget", Showcase: UsageWidgetBlock },
   { id: "credit-usage-widget", label: "Credit Usage Widget", Showcase: CreditUsageBlock },
 ];
@@ -71,8 +83,11 @@ const COMPONENTS: ComponentEntry[] = [
   { id: "button-group", label: "Button Group", Showcase: ButtonGroupShowcase },
   { id: "calendar", label: "Calendar", Showcase: CalendarShowcase },
   { id: "card", label: "Card", Showcase: CardShowcase },
+  { id: "carousel", label: "Carousel", Showcase: CarouselShowcase },
   { id: "checkbox", label: "Checkbox", Showcase: CheckboxShowcase },
   { id: "chip", label: "Chip", Showcase: ChipShowcase },
+  { id: "context-menu", label: "Context Menu", Showcase: ContextMenuShowcase },
+  { id: "drawer", label: "Drawer", Showcase: DrawerShowcase },
   { id: "input", label: "Input", Showcase: FormShowcase },
   { id: "input-otp", label: "Input OTP", Showcase: InputOTPShowcase },
   { id: "number-field", label: "Number Field", Showcase: NumberFieldShowcase },
@@ -82,8 +97,10 @@ const COMPONENTS: ComponentEntry[] = [
   { id: "scroll-shadow", label: "Scroll Shadow", Showcase: ScrollShadowShowcase },
   { id: "search-field", label: "Search Field", Showcase: SearchFieldShowcase },
   { id: "select", label: "Select", Showcase: SelectShowcase },
+  { id: "sidebar", label: "Sidebar", Showcase: SidebarShowcase },
   { id: "skeleton", label: "Skeleton", Showcase: SkeletonShowcase },
   { id: "slider", label: "Slider", Showcase: SliderShowcase },
+  { id: "stat-card", label: "Stat Card", Showcase: StatCardShowcase },
   { id: "surface", label: "Surface", Showcase: SurfaceShowcase },
   { id: "table", label: "Table", Showcase: TableShowcase },
   { id: "tabs", label: "Tabs", Showcase: TabsShowcase },

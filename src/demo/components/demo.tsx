@@ -34,6 +34,9 @@ export function Demo({
 }: DemoProps) {
   const [expanded, setExpanded] = useState(false);
   const [collapsible, setCollapsible] = useState(false);
+  // Until we've measured the snippet, render collapsed with no transition so
+  // tall examples never flash open and animate closed on first paint.
+  const [measured, setMeasured] = useState(false);
   const codeRef = useRef<HTMLDivElement>(null);
 
   // Collapsed peek height (≈ 3 lines). Matches the design's gradient fade.
@@ -44,10 +47,11 @@ export function Demo({
   useLayoutEffect(() => {
     const el = codeRef.current;
     if (el) setCollapsible(el.scrollHeight > COLLAPSED + 8);
+    setMeasured(true);
   }, [code]);
 
   // Premium content stays locked: never expands, always shows the peek + CTA.
-  const isCollapsed = premium || (collapsible && !expanded);
+  const isCollapsed = premium || !measured || (collapsible && !expanded);
 
   return (
     <div className="rounded-xl bg-muted">
@@ -72,7 +76,10 @@ export function Demo({
           {/* Clipping wrapper: rounds the card's bottom and hides collapsed code. */}
           <div
             ref={codeRef}
-            className="relative overflow-hidden rounded-b-xl transition-[max-height] duration-300 ease-out"
+            className={cn(
+              "relative overflow-hidden rounded-b-xl",
+              measured && "transition-[max-height] duration-300 ease-out",
+            )}
             style={{
               maxHeight: isCollapsed
                 ? COLLAPSED

@@ -34,8 +34,13 @@ Scan this first. Match the outcome you want to a component before you compose on
 | User picture or initials | `Avatar` |  |
 | Structured data in rows and columns | `Table` |  |
 | Menu of actions from a button | `DropdownMenu` |  |
+| Menu of actions on right-click | `ContextMenu` |  |
+| App navigation down the side of a layout | `Sidebar` | rebuilding nav rows from Button |
+| A single KPI or metric tile | `StatCard` | hand-building a Card with a Chip |
+| Cycle through images or cards one at a time | `Carousel` |  |
 | Floating panel next to a trigger | `Popover` |  |
 | Focused task or confirmation | `Dialog` |  |
+| Slide-in panel from a screen edge | `Drawer` | a full Dialog for side navigation or filters |
 | Switch between related views | `Tabs` |  |
 | Expandable sections | `Accordion` |  |
 | Inline status message | `Alert` |  |
@@ -63,9 +68,12 @@ Scan this first. Match the outcome you want to a component before you compose on
 - **Button Group**: Join related buttons into a single attached control, such as a segmented switch or toolbar.
 - **Calendar**: Pick a single day or a date range from a month grid.
 - **Card**: Container surface that groups related content with padding, border, and optional media.
+- **Carousel**: Center-focused slider with peeking neighbours, arrows, and dot indicators.
 - **Checkbox**: Toggle one boolean option, with support for an indeterminate state.
 - **Chip**: Compact label for a status, tag, or removable filter. Full semantic color range.
+- **Context Menu**: Menu that opens at the pointer on right-click, reusing the dropdown menu items.
 - **Dialog**: Modal overlay for a focused task or a confirmation.
+- **Drawer**: Panel that slides in from a screen edge for navigation, filters, details, or settings.
 - **Dropdown Menu**: Menu of actions opened from a trigger button.
 - **Input**: Single-line text field with label, description, and error states.
 - **Input Otp**: Segmented input for one-time codes and PINs.
@@ -78,8 +86,10 @@ Scan this first. Match the outcome you want to a component before you compose on
 - **Scroll Shadow**: Fade the edges of a scrollable area to signal that more content is off-screen.
 - **Search Field**: Text input built for search and filtering, with a search icon, a clear button, and clear-on-Escape.
 - **Select**: Dropdown for picking one option from a list.
+- **Sidebar**: Vertical app navigation with a brand header, active items, collapsible groups, and a pinned footer.
 - **Skeleton**: Placeholder blocks shown while content is loading.
 - **Slider**: Pick a numeric value or range by dragging along a track.
+- **Stat Card**: Compact KPI tile with a label, headline value, trend chip, and caption.
 - **Surface**: Low-level styled container primitive with configurable elevation.
 - **Table**: Show structured data in rows and columns, with selection and sorting.
 - **Tabs**: Switch between related views within the same space.
@@ -722,6 +732,68 @@ export function Example() {
 
 ---
 
+### Carousel
+
+Center-focused slider with peeking neighbours, arrows, and dot indicators.
+
+Use for: carousel, slider, gallery, slideshow, swipe, coverflow.
+
+Exports: `Carousel`, `CarouselItem`
+
+```tsx
+import { Carousel, CarouselItem } from "@rocketui-react/core";
+```
+
+#### Carousel
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `index` | `number` | `-` | Active slide index (controlled). |
+| `defaultIndex` | `number` | `0` | Initial active slide index (uncontrolled). |
+| `onIndexChange` | `(index: number) => void` | `-` | Fired with the new active index. |
+| `slideWidth` | `number` | `311` | Width of the active (square) slide in pixels; shrinks to fit narrow viewports. |
+| `gap` | `number` | `24` | Gap between slides in pixels. |
+| `peekScale` | `number` | `0.7` | Scale applied to the non-active side slides. |
+| `fadeColor` | `string` | `"var(--color-background)"` | Colour the side slides fade into at their outer edge; set it to match the surface behind the carousel. |
+| `loop` | `boolean` | `false` | Wrap from the last slide back to the first. |
+| `showArrows` | `boolean` | `true` | Show the previous/next arrow buttons. |
+| `showDots` | `boolean` | `true` | Show the dot indicators. |
+| `autoPlay` | `boolean` | `false` | Advance automatically; pauses on hover and while dragging. |
+| `autoPlayInterval` | `number` | `4000` | Autoplay interval in milliseconds. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### CarouselItem
+
+A single slide. Fills its square slot — give it an image or card as the child.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import { Carousel, CarouselItem } from "@rocketui-react/core";
+
+export function Example() {
+  return (
+    <Carousel slideWidth={300} defaultIndex={1}>
+      <CarouselItem>
+        <img src="/photo-1.jpg" alt="" className="size-full object-cover" />
+      </CarouselItem>
+      <CarouselItem>
+        <img src="/photo-2.jpg" alt="" className="size-full object-cover" />
+      </CarouselItem>
+      <CarouselItem>
+        <img src="/photo-3.jpg" alt="" className="size-full object-cover" />
+      </CarouselItem>
+    </Carousel>
+  );
+}
+```
+
+---
+
 ### Checkbox
 
 Toggle one boolean option, with support for an indeterminate state.
@@ -798,6 +870,92 @@ export function Example() {
 
 ---
 
+### Context Menu
+
+Menu that opens at the pointer on right-click, reusing the dropdown menu items.
+
+Use for: context menu, right click, rmb, menu, actions.
+
+Exports: `ContextMenu`, `ContextMenuTrigger`, `ContextMenuContent`, `ContextMenuItem`
+
+```tsx
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@rocketui-react/core";
+```
+
+#### ContextMenu
+
+Root that owns the open state and the pointer position.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `-` | Open state (controlled). |
+| `defaultOpen` | `boolean` | `false` | Initial open state. |
+| `onOpenChange` | `(open: boolean) => void` | `-` | Fired when open state changes. |
+
+#### ContextMenuTrigger
+
+The region that opens the menu on right-click. Renders a <div>, or the child via asChild.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | `false` | Merge the trigger behaviour onto the child element. |
+| `disabled` | `boolean` | `false` | Disable opening the menu. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### ContextMenuContent
+
+The menu surface, positioned at the pointer and clamped to the viewport.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `closeOnEscape` | `boolean` | `true` | Close when Escape is pressed. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### ContextMenuItem
+
+Same as DropdownMenuItem. ContextMenuLabel, ContextMenuSeparator, ContextMenuGroup and ContextMenuSub* are also re-exported.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onSelect` | `() => void` | `-` | Fired on click / Enter / Space. |
+| `icon` | `ReactNode` | `-` | Leading icon. |
+| `shortcut` | `ReactNode` | `-` | Trailing keyboard shortcut hint. |
+| `destructive` | `boolean` | `false` | Style as a dangerous action. |
+| `disabled` | `boolean` | `false` | Disable the item. |
+
+Usage:
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+} from "@rocketui-react/core";
+import { Copy, Scissors, Trash } from "@phosphor-icons/react";
+
+export function Example() {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div className="grid h-40 place-items-center rounded-2xl border border-dashed">
+          Right-click here
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem icon={<Copy />} shortcut="⌘C">Copy</ContextMenuItem>
+        <ContextMenuItem icon={<Scissors />} shortcut="⌘X">Cut</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem icon={<Trash />} destructive>Delete</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+
+---
+
 ### Dialog
 
 Modal overlay for a focused task or a confirmation.
@@ -853,6 +1011,96 @@ export function Example() {
         </DialogHeader>
       </DialogContent>
     </Dialog>
+  );
+}
+```
+
+---
+
+### Drawer
+
+Panel that slides in from a screen edge for navigation, filters, details, or settings.
+
+Use for: drawer, sheet, side panel, slide over, off-canvas, flyout.
+
+Exports: `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerBody`, `DrawerFooter`, `DrawerClose`
+
+```tsx
+import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerBody, DrawerFooter, DrawerClose } from "@rocketui-react/core";
+```
+
+#### Drawer
+
+Root that owns the open state.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `-` | Open state (controlled). |
+| `defaultOpen` | `boolean` | `false` | Initial open state. |
+| `onOpenChange` | `(open: boolean) => void` | `-` | Fired when open state changes. |
+
+#### DrawerTrigger
+
+Opens the drawer. Renders a <button>, or the child via asChild.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | `false` | Merge the trigger behaviour onto the child element. |
+
+#### DrawerContent
+
+The sliding panel. Wrap DrawerHeader, DrawerBody and DrawerFooter inside it.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `side` | `"right" \| "left" \| "top" \| "bottom"` | `"right"` | Edge the panel slides in from. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Panel width (left/right) or height (top/bottom). |
+| `hideClose` | `boolean` | `false` | Hide the built-in top-right close button. |
+| `closeOnOverlayClick` | `boolean` | `true` | Close when the overlay is clicked. |
+| `closeOnEscape` | `boolean` | `true` | Close when Escape is pressed. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### DrawerHeader / DrawerBody / DrawerFooter
+
+Layout slots. DrawerBody scrolls; header and footer stay pinned. DrawerTitle, DrawerDescription and DrawerClose are also exported.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  Button,
+} from "@rocketui-react/core";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button>Open drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent side="right">
+        <DrawerHeader>
+          <DrawerTitle>Settings</DrawerTitle>
+        </DrawerHeader>
+        <DrawerBody>Panel content</DrawerBody>
+        <DrawerFooter>
+          <DrawerClose asChild>
+            <Button>Done</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }
 ```
@@ -1411,6 +1659,121 @@ export function Example() {
 
 ---
 
+### Sidebar
+
+Vertical app navigation with a brand header, active items, collapsible groups, and a pinned footer.
+
+Use for: sidebar, navigation, nav, menu, app shell, side nav.
+
+Exports: `Sidebar`, `SidebarHeader`, `SidebarSection`, `SidebarItem`, `SidebarGroup`, `SidebarSubItem`, `SidebarSeparator`, `SidebarFooter`
+
+```tsx
+import { Sidebar, SidebarHeader, SidebarSection, SidebarItem, SidebarGroup, SidebarSubItem, SidebarSeparator, SidebarFooter } from "@rocketui-react/core";
+```
+
+#### Sidebar
+
+The shell and selection owner. Renders a <nav>; give items a value and they become active on click. Set a height (e.g. h-screen) to pin the footer.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `-` | Value of the selected item (controlled). |
+| `defaultValue` | `string` | `-` | Value of the initially selected item (uncontrolled). |
+| `onValueChange` | `(value: string) => void` | `-` | Fired with the value of the item that was selected. |
+| `className` | `string` | `-` | Extra classes merged onto the root element (e.g. width or height). |
+
+#### SidebarItem
+
+A primary navigation row. Renders a <button>, or the child element via asChild.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `ReactNode` | `-` | Leading icon element. |
+| `value` | `string` | `-` | Selection id. Selected on click and matched against the Sidebar value to set the active state. |
+| `active` | `boolean` | `-` | Force the active state, overriding value-based selection. |
+| `trailing` | `ReactNode` | `-` | Trailing content, e.g. a badge or count. |
+| `asChild` | `boolean` | `false` | Render styles onto the child (e.g. an <a> or router link). |
+| `onClick` | `(e) => void` | `-` | Fired on press, after selection. |
+| `disabled` | `boolean` | `false` | Disable the item. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### SidebarGroup
+
+A labelled group that expands and collapses a tree of sub-items.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | `-` | Group label shown on the trigger. Required. |
+| `icon` | `ReactNode` | `-` | Leading icon for the trigger. |
+| `open` | `boolean` | `-` | Open state (controlled). |
+| `defaultOpen` | `boolean` | `false` | Initial open state (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void` | `-` | Fired when the open state changes. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### SidebarSubItem
+
+A nested link inside a SidebarGroup, drawn with a tree connector.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `-` | Selection id. Selected on click and matched against the Sidebar value. |
+| `active` | `boolean` | `-` | Force the active state, overriding value-based selection. |
+| `asChild` | `boolean` | `false` | Render styles onto the child element. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### SidebarHeader / SidebarSection / SidebarFooter / SidebarSeparator
+
+Structural slots. Header holds the brand, Section groups items, Footer pins to the bottom, Separator draws a divider.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+Usage:
+
+```tsx
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarSection,
+  SidebarItem,
+  SidebarGroup,
+  SidebarSubItem,
+  SidebarSeparator,
+  SidebarFooter,
+} from "@rocketui-react/core";
+import { Compass, CurrencyCircleDollar, Gear, Package } from "@phosphor-icons/react";
+
+export function Example() {
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <img src="/logo.svg" alt="RocketUI" className="size-9" />
+        <span className="text-lg font-semibold">RocketUI</span>
+      </SidebarHeader>
+
+      <SidebarSection className="mt-3">
+        <SidebarItem icon={<Compass />} active>Dashboard</SidebarItem>
+        <SidebarItem icon={<Package />}>Products</SidebarItem>
+      </SidebarSection>
+
+      <SidebarSeparator />
+
+      <SidebarGroup icon={<CurrencyCircleDollar />} label="Finances" defaultOpen>
+        <SidebarSubItem>Invoices</SidebarSubItem>
+        <SidebarSubItem>Transactions</SidebarSubItem>
+      </SidebarGroup>
+
+      <SidebarFooter>
+        <SidebarItem icon={<Gear />}>Settings</SidebarItem>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
+```
+
+---
+
 ### Skeleton
 
 Placeholder blocks shown while content is loading.
@@ -1484,6 +1847,60 @@ import { useState } from "react";
 export function Example() {
   const [value, setValue] = useState(60);
   return <Slider label="Storage" showValue value={value} onValueChange={setValue} />;
+}
+```
+
+---
+
+### Stat Card
+
+Compact KPI tile with a label, headline value, trend chip, and caption.
+
+Use for: stat, kpi, metric, dashboard, summary, trend.
+
+Exports: `StatCard`
+
+```tsx
+import { StatCard } from "@rocketui-react/core";
+```
+
+#### StatCard
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `ReactNode` | `-` | Metric name shown at the top. Required. |
+| `value` | `ReactNode` | `-` | The headline value, e.g. a number or currency. Required. |
+| `icon` | `ReactNode` | `-` | Leading icon shown top-right. |
+| `description` | `ReactNode` | `-` | Supporting caption under the value. |
+| `trend` | `StatCardTrend` | `-` | Trend chip beside the value. |
+| `className` | `string` | `-` | Extra classes merged onto the root element. |
+
+#### StatCardTrend
+
+The shape of the trend prop.
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `ReactNode` | `-` | The delta label, e.g. "10.5%". Required. |
+| `direction` | `"up" \| "down"` | `"up"` | Arrow direction. |
+| `color` | `"neutral" \| "primary" \| "success" \| "warning" \| "destructive" \| "info"` | `-` | Chip colour. Defaults to success for up and destructive for down. |
+
+Usage:
+
+```tsx
+import { StatCard } from "@rocketui-react/core";
+import { ShoppingCart } from "@phosphor-icons/react";
+
+export function Example() {
+  return (
+    <StatCard
+      label="Revenue"
+      value="$48,120"
+      icon={<ShoppingCart weight="fill" />}
+      trend={{ value: "12.4%", direction: "up" }}
+      description="vs. last 30 days"
+    />
+  );
 }
 ```
 

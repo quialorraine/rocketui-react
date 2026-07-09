@@ -1,5 +1,31 @@
+import {
+  ArrowUpRight,
+  ChartPieSlice,
+  Compass,
+  CurrencyCircleDollar,
+  Gear,
+  Image as ImageIcon,
+  ListDashes,
+  Package,
+  Question,
+  Receipt,
+  SealPercent,
+  Storefront,
+  UsersThree,
+} from "@phosphor-icons/react";
 import { AreaChart } from "@/components/ui/area-chart";
 import { BarChart } from "@/components/ui/bar-chart";
+import {
+  Sidebar,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarItem,
+  SidebarSection,
+  SidebarSeparator,
+  SidebarSubItem,
+} from "@/components/ui/sidebar";
+import { cn } from "@/lib/cn";
+import logoUrl from "@/assets/logo.svg";
 import { ComponentPage, Subsection } from "./docs";
 import { Demo } from "./components/demo";
 
@@ -206,6 +232,271 @@ export function UsageWidgetBlock() {
       >
         <Demo code={WIDGET_CODE}>
           <UsageWidget />
+        </Demo>
+      </Subsection>
+    </ComponentPage>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            Billing Status                                   */
+/* -------------------------------------------------------------------------- */
+
+const BILLING_TOTAL = 45;
+const BILLING_CLEARED = 22;
+
+function BillingStatus() {
+  return (
+    <div className="w-[387px] rounded-2xl border border-border bg-card p-[22px]">
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Receipt weight="fill" className="size-[22px] text-foreground" />
+            <h3 className="text-lg font-semibold text-foreground">
+              Billing Status
+            </h3>
+          </div>
+          <p className="text-sm text-muted-foreground">Last payment: Nov 7</p>
+        </div>
+        <button
+          type="button"
+          className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        >
+          <ArrowUpRight className="size-5" />
+        </button>
+      </div>
+
+      <div className="mt-5 flex items-center gap-2.5">
+        <p className="text-[26px] font-semibold leading-none text-foreground">
+          68.34%
+        </p>
+        <span className="grid size-[30px] place-items-center rounded-md bg-success/10 text-success">
+          <ArrowUpRight className="size-4" />
+        </span>
+      </div>
+
+      <div className="mt-5 flex flex-col gap-1.5">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>Auto-cleared</span>
+          <span>Under Review</span>
+        </div>
+        <div className="flex h-10 items-center justify-between">
+          {Array.from({ length: BILLING_TOTAL }).map((_, i) => (
+            <span
+              key={i}
+              className={cn(
+                "h-10 w-[3px] rounded-full",
+                i < BILLING_CLEARED ? "bg-success" : "bg-border",
+              )}
+            />
+          ))}
+        </div>
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>11.2K</span>
+          <span>22</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const BILLING_CODE = `import { cn } from "@rocketui-react/core";
+import { ArrowUpRight, Receipt } from "@phosphor-icons/react";
+
+const TOTAL = 45;
+const CLEARED = 22;
+
+function BillingStatus() {
+  return (
+    <div className="w-[387px] rounded-2xl border border-border bg-card p-[22px]">
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Receipt weight="fill" className="size-[22px]" />
+            <h3 className="text-lg font-semibold">Billing Status</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">Last payment: Nov 7</p>
+        </div>
+        <button className="grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground">
+          <ArrowUpRight className="size-5" />
+        </button>
+      </div>
+
+      <div className="mt-5 flex items-center gap-2.5">
+        <p className="text-[26px] font-semibold leading-none">68.34%</p>
+        <span className="grid size-[30px] place-items-center rounded-md bg-success/10 text-success">
+          <ArrowUpRight className="size-4" />
+        </span>
+      </div>
+
+      <div className="mt-5 flex flex-col gap-1.5">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>Auto-cleared</span>
+          <span>Under Review</span>
+        </div>
+        <div className="flex h-10 items-center justify-between">
+          {Array.from({ length: TOTAL }).map((_, i) => (
+            <span key={i} className={cn("h-10 w-[3px] rounded-full", i < CLEARED ? "bg-success" : "bg-border")} />
+          ))}
+        </div>
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>11.2K</span>
+          <span>22</span>
+        </div>
+      </div>
+    </div>
+  );
+}`;
+
+export function BillingStatusBlock() {
+  return (
+    <ComponentPage
+      id="billing-status"
+      title="Billing Status"
+      description="A billing summary card with a header action, a headline percentage with a trend badge, and a segmented meter comparing two buckets. Built from the Card surface and semantic tokens."
+    >
+      <Subsection
+        title="Preview"
+        description="The segmented bar splits auto-cleared from under-review balances."
+      >
+        <Demo code={BILLING_CODE}>
+          <BillingStatus />
+        </Demo>
+      </Subsection>
+    </ComponentPage>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            Sidebar Navigation                               */
+/* -------------------------------------------------------------------------- */
+
+function SidebarNav() {
+  return (
+    <Sidebar className="w-[248px]" defaultValue="dashboard">
+      <SidebarHeader>
+        <img src={logoUrl} alt="RocketUI" className="size-9 shrink-0" />
+        <span className="text-lg font-semibold text-foreground">RocketUI</span>
+      </SidebarHeader>
+
+      <SidebarSection className="mt-3">
+        <SidebarItem icon={<Compass />} value="dashboard">
+          Dashboard
+        </SidebarItem>
+        <SidebarItem icon={<ListDashes />} value="orders">
+          Orders
+        </SidebarItem>
+        <SidebarItem icon={<Package />} value="products">
+          Products
+        </SidebarItem>
+        <SidebarItem icon={<UsersThree />} value="customers">
+          Customers
+        </SidebarItem>
+        <SidebarItem icon={<ImageIcon />} value="content">
+          Content
+        </SidebarItem>
+        <SidebarItem icon={<Storefront />} value="store">
+          Online store
+        </SidebarItem>
+      </SidebarSection>
+
+      <SidebarSeparator />
+
+      <SidebarGroup
+        icon={<CurrencyCircleDollar />}
+        label="Finances"
+        defaultOpen
+      >
+        <SidebarSubItem value="invoices">Invoices</SidebarSubItem>
+        <SidebarSubItem value="transactions">Transactions</SidebarSubItem>
+        <SidebarSubItem value="reports">Reports</SidebarSubItem>
+      </SidebarGroup>
+
+      <SidebarSection className="mt-1">
+        <SidebarItem icon={<ChartPieSlice />} value="analytics">
+          Analytics
+        </SidebarItem>
+        <SidebarItem icon={<SealPercent />} value="discounts">
+          Discounts
+        </SidebarItem>
+      </SidebarSection>
+
+      <SidebarSection className="mt-8">
+        <SidebarItem icon={<Gear />} value="settings">
+          Settings
+        </SidebarItem>
+        <SidebarItem icon={<Question />} value="help">
+          Help & Support
+        </SidebarItem>
+      </SidebarSection>
+    </Sidebar>
+  );
+}
+
+const SIDEBAR_CODE = `import {
+  Sidebar, SidebarHeader, SidebarSection, SidebarSeparator,
+  SidebarItem, SidebarGroup, SidebarSubItem,
+} from "@rocketui-react/core";
+import {
+  ChartPieSlice, Compass, CurrencyCircleDollar, Gear,
+  Image as ImageIcon, ListDashes, Package, Question, SealPercent,
+  Storefront, UsersThree,
+} from "@phosphor-icons/react";
+import logo from "./logo.svg";
+
+function SidebarNav() {
+  // Sidebar tracks the selected item — give each item a value and it
+  // becomes active on click. Use value/onValueChange for controlled routing.
+  return (
+    <Sidebar className="w-[248px]" defaultValue="dashboard">
+      <SidebarHeader>
+        <img src={logo} alt="RocketUI" className="size-9 shrink-0" />
+        <span className="text-lg font-semibold">RocketUI</span>
+      </SidebarHeader>
+
+      <SidebarSection className="mt-3">
+        <SidebarItem icon={<Compass />} value="dashboard">Dashboard</SidebarItem>
+        <SidebarItem icon={<ListDashes />} value="orders">Orders</SidebarItem>
+        <SidebarItem icon={<Package />} value="products">Products</SidebarItem>
+        <SidebarItem icon={<UsersThree />} value="customers">Customers</SidebarItem>
+        <SidebarItem icon={<ImageIcon />} value="content">Content</SidebarItem>
+        <SidebarItem icon={<Storefront />} value="store">Online store</SidebarItem>
+      </SidebarSection>
+
+      <SidebarSeparator />
+
+      <SidebarGroup icon={<CurrencyCircleDollar />} label="Finances" defaultOpen>
+        <SidebarSubItem value="invoices">Invoices</SidebarSubItem>
+        <SidebarSubItem value="transactions">Transactions</SidebarSubItem>
+        <SidebarSubItem value="reports">Reports</SidebarSubItem>
+      </SidebarGroup>
+
+      <SidebarSection className="mt-1">
+        <SidebarItem icon={<ChartPieSlice />} value="analytics">Analytics</SidebarItem>
+        <SidebarItem icon={<SealPercent />} value="discounts">Discounts</SidebarItem>
+      </SidebarSection>
+
+      <SidebarSection className="mt-8">
+        <SidebarItem icon={<Gear />} value="settings">Settings</SidebarItem>
+        <SidebarItem icon={<Question />} value="help">Help & Support</SidebarItem>
+      </SidebarSection>
+    </Sidebar>
+  );
+}`;
+
+export function SidebarNavBlock() {
+  return (
+    <ComponentPage
+      id="sidebar-nav"
+      title="Sidebar Navigation"
+      description="A full application sidebar: brand header, primary nav with an active item, a collapsible group with a tree of sub-links, and a pinned footer. Built entirely from semantic tokens and Phosphor icons."
+    >
+      <Subsection
+        title="Preview"
+        description="Dashboard is active; Finances expands into Invoices, Transactions and Reports."
+      >
+        <Demo code={SIDEBAR_CODE}>
+          <SidebarNav />
         </Demo>
       </Subsection>
     </ComponentPage>

@@ -22,7 +22,7 @@ import { cn } from "@/lib/cn";
 /*                                  Context                                    */
 /* -------------------------------------------------------------------------- */
 
-interface MenuContextValue {
+export interface MenuContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
   triggerId: string;
@@ -30,7 +30,11 @@ interface MenuContextValue {
   rootRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const MenuContext = createContext<MenuContextValue | null>(null);
+/**
+ * Shared by DropdownMenu and ContextMenu so both can reuse the same item,
+ * label, separator, group and submenu parts.
+ */
+export const MenuContext = createContext<MenuContextValue | null>(null);
 
 function useMenuContext(component: string): MenuContextValue {
   const ctx = useContext(MenuContext);
@@ -439,8 +443,11 @@ interface SubContextValue {
   triggerId: string;
   contentId: string;
   openWithDelay: () => void;
+  openViaKeyboard: () => void;
   closeWithDelay: () => void;
   cancelClose: () => void;
+  /** Whether the submenu was last opened via the keyboard (drives autofocus). */
+  keyboardRef: React.MutableRefObject<boolean>;
 }
 
 const SubContext = createContext<SubContextValue | null>(null);
@@ -455,6 +462,7 @@ export function DropdownMenuSub({ children }: { children?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const reactId = useId();
   const timer = useRef<number | null>(null);
+  const keyboardRef = useRef(false);
 
   const cancelClose = useCallback(() => {
     if (timer.current) window.clearTimeout(timer.current);
@@ -462,6 +470,12 @@ export function DropdownMenuSub({ children }: { children?: ReactNode }) {
   }, []);
   const openWithDelay = useCallback(() => {
     cancelClose();
+    keyboardRef.current = false;
+    setOpen(true);
+  }, [cancelClose]);
+  const openViaKeyboard = useCallback(() => {
+    cancelClose();
+    keyboardRef.current = true;
     setOpen(true);
   }, [cancelClose]);
   const closeWithDelay = useCallback(() => {
@@ -479,8 +493,10 @@ export function DropdownMenuSub({ children }: { children?: ReactNode }) {
         triggerId: `submenu-trigger-${reactId}`,
         contentId: `submenu-content-${reactId}`,
         openWithDelay,
+        openViaKeyboard,
         closeWithDelay,
         cancelClose,
+        keyboardRef,
       }}
     >
       <div className="relative">{children}</div>
@@ -503,8 +519,16 @@ export function DropdownMenuSubTrigger({
   disabled,
   ...props
 }: DropdownMenuSubTriggerProps) {
-  const { open, setOpen, triggerId, contentId, openWithDelay, closeWithDelay } =
-    useSubContext("DropdownMenuSubTrigger");
+  const {
+    open,
+    setOpen,
+    triggerId,
+    contentId,
+    openWithDelay,
+    openViaKeyboard,
+    closeWithDelay,
+    keyboardRef,
+  } = useSubContext("DropdownMenuSubTrigger");
 
   return (
     <button
@@ -516,13 +540,16 @@ export function DropdownMenuSubTrigger({
       aria-haspopup="menu"
       aria-expanded={open}
       aria-controls={open ? contentId : undefined}
-      onClick={() => setOpen(!open)}
+      onClick={() => {
+        keyboardRef.current = false;
+        setOpen(!open);
+      }}
       onMouseEnter={openWithDelay}
       onMouseLeave={closeWithDelay}
       onKeyDown={(event) => {
         if (event.key === "ArrowRight" || event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          setOpen(true);
+          openViaKeyboard();
         }
       }}
       className={cn(
@@ -557,8 +584,15 @@ export function DropdownMenuSubContent({
   children,
   ...props
 }: DropdownMenuSubContentProps) {
-  const { open, setOpen, triggerId, contentId, openWithDelay, closeWithDelay } =
-    useSubContext("DropdownMenuSubContent");
+  const {
+    open,
+    setOpen,
+    triggerId,
+    contentId,
+    openWithDelay,
+    closeWithDelay,
+    keyboardRef,
+  } = useSubContext("DropdownMenuSubContent");
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(open);
   const [visible, setVisible] = useState(false);
@@ -574,13 +608,15 @@ export function DropdownMenuSubContent({
     return () => window.clearTimeout(timer);
   }, [open]);
 
+  // Only steal focus when the submenu was opened via the keyboard — opening on
+  // hover must not leave the first item highlighted under the pointer.
   useEffect(() => {
-    if (!open) return;
+    if (!open || !keyboardRef.current) return;
     const frame = requestAnimationFrame(() =>
       ref.current?.querySelector<HTMLElement>('[role="menuitem"]:not(:disabled)')?.focus(),
     );
     return () => cancelAnimationFrame(frame);
-  }, [open]);
+  }, [open, keyboardRef]);
 
   if (!mounted) return null;
 
